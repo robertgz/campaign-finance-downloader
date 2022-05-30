@@ -2,8 +2,7 @@
 import { Browser, ElementHandle, Page } from "puppeteer";
 const { getNetFileURL } = require('./shared');
 
-export const getLiHandles = async (handle: ElementHandle<Element> | null, selector = ':scope '): Promise<ElementHandle<Element>[]> => {
-  if (!handle) return [];
+export const getLiHandles = async (handle: ElementHandle<Element>, selector = ':scope '): Promise<ElementHandle<Element>[]> => {
   return await Promise.all( await handle.$$(`${selector} > li`) );
 }
 

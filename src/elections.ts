@@ -1,11 +1,10 @@
 const puppeteer = require('puppeteer');
-import { Browser, ElementHandle, Page } from "puppeteer";
 
 import { getNetFilePage, getBranchText, getLiHandles } from './shared-puppeteer';
 
 /**
- * @param {string} aid - Example: "CSD"
- * @returns {string[]} - Examples: ["11/03/2020 General Election", "03/03/2020 Primary Election"]
+ * aid - Example: "CSD"
+ * return - Example: ["11/03/2020 General Election", "03/03/2020 Primary Election"]
  */
 export const getElections = async function electionCycleTitles(aid: string): Promise<string[]> {
   let titles: string[] = [];
@@ -16,6 +15,9 @@ export const getElections = async function electionCycleTitles(aid: string): Pro
     
     const page = await getNetFilePage(aid, browser);
     let rootHandle = await page.waitForSelector(electionCycleRootULSelector);
+
+    if (!rootHandle) throw new Error(`Selector not found: ${electionCycleRootULSelector}`);
+
     let listLIHandles = await getLiHandles(rootHandle);
 
     for (const liHandle of  listLIHandles) {

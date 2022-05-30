@@ -1,0 +1,16 @@
+{
+  "name": "netfile-utils",
+  "version": "0.0.0",
+  "description": "Functions for downloading data from NetFile",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.15.0 <17",
+    "npm": "8.5.5"
+  },
+  "private": true
+}

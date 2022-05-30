@@ -2,6 +2,7 @@
   "name": "netfile-utils",
   "version": "0.0.0",
   "description": "Functions for downloading data from NetFile",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,5 +13,7 @@
     "node": ">=16.15.0 <17",
     "npm": "8.5.5"
   },
-  "private": true
+  "dependencies": {
+    "puppeteer": "^14.1.1"
+  }
 }

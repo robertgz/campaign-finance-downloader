@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 import { Browser, ElementHandle, ErrorCode, Page } from "puppeteer";
-import { getNetFilePage, getBranchText, getLiHandles } from './shared-puppeteer';
+import { getNetFilePage, getBranchText, getLiHandles, getElectionsRoot } from './shared-puppeteer';
 
 interface ListItem {
   name: string;
@@ -72,7 +72,7 @@ async function getElectionCycleLiHandle(parentHandle: ElementHandle, electionCyc
   throw new Error(`Cycle title '${electionCycleTitle}' not found.`);
 }
 
-async function getElectionCycleUlHandle(page: Page, branchHandle: ElementHandle, electionCycleTitle: string) {
+async function getElectionCycleUlHandle(page: Page, branchHandle: ElementHandle, electionCycleTitle: string): Promise<ElementHandle<Element>> {
  
   let cycleLIHandle = await getElectionCycleLiHandle(branchHandle, electionCycleTitle);
 
@@ -94,7 +94,10 @@ async function getElectionCycleUlHandle(page: Page, branchHandle: ElementHandle,
     throw new Error(`Not able to use: ${electionCycleTitle}`);
   }
 
-  return await cycleLIHandle.$(`:scope > ul.rtUL`);
+  const handle = await cycleLIHandle.$(`:scope > ul.rtUL`);
+  if (!handle) throw new Error(`Handle not found.`);
+
+  return handle;
 }
 
 /**
@@ -119,12 +122,9 @@ async function getElectionCycleCandidates(aid: string, electionCycleTitle: strin
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
 
   try {
-    const electionCycleRootULSelector = '#ctl00_phBody_browseElections_treeBrowse > ul';
-    
     const page = await getNetFilePage(aid, browser)
-    let rootHandle = await page.waitForSelector(electionCycleRootULSelector);
 
-    if (!rootHandle) throw new Error(`Selector not found: ${electionCycleRootULSelector}`);
+    let rootHandle = await getElectionsRoot(aid, page);
     
     if (electionCycleTitle !== '') {
       rootHandle = await getElectionCycleUlHandle(page, rootHandle, electionCycleTitle);

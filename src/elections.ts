@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-import { getNetFilePage, getBranchText, getLiHandles } from './shared-puppeteer';
+import { getNetFilePage, getBranchText, getLiHandles, getElectionsRoot } from './shared-puppeteer';
 
 /**
  * aid - Example: "CSD"
@@ -11,12 +11,9 @@ export const getElections = async function electionCycleTitles(aid: string): Pro
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
 
   try {
-    const electionCycleRootULSelector = '#ctl00_phBody_browseElections_treeBrowse > ul';
-    
     const page = await getNetFilePage(aid, browser);
-    let rootHandle = await page.waitForSelector(electionCycleRootULSelector);
 
-    if (!rootHandle) throw new Error(`Selector not found: ${electionCycleRootULSelector}`);
+    const rootHandle = await getElectionsRoot(aid, page);
 
     let listLIHandles = await getLiHandles(rootHandle);
 

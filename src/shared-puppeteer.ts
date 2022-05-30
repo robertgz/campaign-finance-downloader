@@ -24,3 +24,13 @@ export const getBranchText = async (handle: ElementHandle<Element>): Promise<str
 
   return await (await (elementHandle).getProperty('innerText')).jsonValue();  
 }
+
+export const getElectionsRoot = async (aid: string, page: Page): Promise<ElementHandle<Element>> => {
+  const electionCycleRootULSelector = '#ctl00_phBody_browseElections_treeBrowse > ul';
+
+  let rootHandle = await page.waitForSelector(electionCycleRootULSelector);
+
+  if (!rootHandle) throw new Error(`Selector not found: ${electionCycleRootULSelector}`);
+
+  return rootHandle;
+}

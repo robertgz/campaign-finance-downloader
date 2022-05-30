@@ -1,7 +1,7 @@
 {
-  "name": "netfile-utils",
+  "name": "election-data-scraper",
   "version": "0.0.0",
-  "description": "Functions for downloading data from NetFile",
+  "description": "Library for scraping election from NetFile and SD eFile",
   "private": true,
   "main": "index.js",
   "scripts": {

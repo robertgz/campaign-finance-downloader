@@ -34,3 +34,13 @@ export const getElectionsRoot = async (aid: string, page: Page): Promise<Element
 
   return rootHandle;
 }
+
+export const getYearsRoot = async (page: Page): Promise<ElementHandle<Element>> => {
+  const electionCycleRootULSelector = '#ctl00_phBody_DateSelect';
+
+  let rootHandle = await page.waitForSelector(electionCycleRootULSelector);
+
+  if (!rootHandle) throw new Error(`Selector not found: ${electionCycleRootULSelector}`);
+
+  return rootHandle;
+}

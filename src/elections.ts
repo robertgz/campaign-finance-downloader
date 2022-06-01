@@ -6,7 +6,7 @@ import { getNetFilePage, getBranchText, getLiHandles, getElectionsRoot } from '.
  * aid - Example: "CSD"
  * return - Example: ["11/03/2020 General Election", "03/03/2020 Primary Election"]
  */
-export const getElections = async function electionCycleTitles(aid: string): Promise<string[]> {
+export const getElectionTitles = async function electionTitles(aid: string): Promise<string[]> {
   let titles: string[] = [];
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
 

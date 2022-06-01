@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-import { Browser, ElementHandle, ErrorCode, Page } from "puppeteer";
+import { ElementHandle, Page } from "puppeteer";
 import { getNetFilePage, getBranchText, getLiHandles, getElectionsRoot } from './shared-puppeteer';
 
 interface ListItem {
@@ -104,8 +104,8 @@ async function getElectionCycleUlHandle(page: Page, branchHandle: ElementHandle,
  * aid - Example: "CSD"
  * electionCycleTitle - Example: "11/03/2020 General Election" | ["11/03/2020 General Election", "03/03/2020 Primary Election"]
  */
-export const getCandidates = async function getMultipleElectionCycleCandidates(aid: string, titles: string | string[]): Promise<Tree[]> {
-  titles = Array.isArray(titles) ? titles : [ titles ];
+export const getCandidates = async function getMultipleElectionCycleCandidates(aid: string, electionTitles: string | string[]): Promise<Tree[]> {
+  const titles = Array.isArray(electionTitles) ? electionTitles : [ electionTitles ];
 
   let forest: Tree[] = [];
 

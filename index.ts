@@ -1,15 +1,12 @@
-import { getElections } from './src/elections'
+import { getElectionTitles } from './src/elections'
 import { getCandidates, flattenCandidateTree } from './src/candidates'
 import { getTransactionYears } from './src/transaction-years';
-
-;(async () => {
-  const list = await getElections('CCV');
-  console.log({ list });
-})()
+import { getXLSXTransactions } from './src/download-xlsx';
 
 module.exports = {
-  getElections,
+  getElectionTitles,
   getCandidates,
   flattenCandidateTree,
   getTransactionYears,
+  getXLSXTransactions,
 };

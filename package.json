@@ -15,6 +15,7 @@
     "npm": "8.5.5"
   },
   "dependencies": {
+    "adm-zip": "^0.5.9",
     "playwright": "^1.22.2",
     "puppeteer": "^14.1.1"
   },

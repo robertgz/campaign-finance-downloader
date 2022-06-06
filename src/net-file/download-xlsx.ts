@@ -2,6 +2,8 @@ const playwright = require('playwright');
 const AdmZip = require("adm-zip");
 
 interface MetaData {
+  aid: string;
+  year: string;
   name: string;
   time: string;
 }
@@ -37,6 +39,8 @@ export const getXLSXTransactions = async (aid: string, year: string) => {
   const XLSXTransactionsFile: Buffer = expectedXLSXFile.getData();
 
   const metaData: MetaData = {
+    aid,
+    year,
     name: expectedXLSXFile.entryName,
     time: expectedXLSXFile.header.time,
   };

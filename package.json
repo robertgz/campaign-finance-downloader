@@ -15,7 +15,7 @@
   "license": "MIT",
   "engines": {
     "node": ">=16.15.0 <17",
-    "npm": "8.5.5"
+    "npm": ">=8.5.5"
   },
   "dependencies": {
     "adm-zip": "^0.5.9",

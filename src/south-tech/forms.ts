@@ -1,9 +1,9 @@
 
-const fs = require('fs/promises');
+import { readFile } from 'fs/promises';
 import { Page, chromium, Locator } from 'playwright';
-import { getSearchFilersNamePage } from './pages';
+import { getSearchFilersNamePage } from './pages.js';
 
-interface Form {
+export interface Form {
   form_type: string;
   form_description: string;
   filing_date: string;
@@ -11,11 +11,11 @@ interface Form {
   export?: Buffer | null;
 }
 
-interface FormWithLocator extends Form {
+export interface FormWithLocator extends Form {
   export_locator?: Locator;
 }
 
-interface Options {
+export interface Options {
   includeTransactionExports?: boolean;
   fromFilingDate?: string;
   toFilingDate?: string;
@@ -73,7 +73,10 @@ const getExportBuffer = async (form: FormWithLocator, page: Page): Promise<Buffe
   ]);
 
   const path = await download.path();
-  return await fs.readFile(path);;
+ 
+  if (!path) return null; // Should something be returned or an error thrown?
+
+  return await readFile(path);;
 }
 
 const getFormRow = async (getExports: boolean, formRows: FormWithLocator[], page: Page): Promise<Form[]> => {

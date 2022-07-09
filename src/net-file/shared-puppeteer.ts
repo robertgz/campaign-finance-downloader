@@ -1,6 +1,6 @@
 
 import { Browser, ElementHandle, Page } from "puppeteer";
-const { getNetFileURL } = require('./shared');
+import { getNetFileURL } from './shared.js';
 
 export const getLiHandles = async (handle: ElementHandle<Element>, selector = ':scope '): Promise<ElementHandle<Element>[]> => {
   return await Promise.all( await handle.$$(`${selector} > li`) );

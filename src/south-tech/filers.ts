@@ -1,7 +1,7 @@
 import { Page, chromium, Locator } from 'playwright';
-import { getSearchElectionPage } from './pages';
+import { getSearchElectionPage } from './pages.js';
 
-interface Filer {
+export interface Filer {
   election_type: string;
   election_date: string;
   filer_name: string;
@@ -27,7 +27,7 @@ export const getFilers = async (pathSegment: string, electionDate: string): Prom
   await selectDateOption(page, electionDate);
   await page.waitForLoadState('networkidle');
 
-  let filerRows: Filer[] = []
+  let filerRows: Filer[] = [];
 
   if (await hasMorePages(page)) {
     filerRows = await getMultiPageFilers(page);

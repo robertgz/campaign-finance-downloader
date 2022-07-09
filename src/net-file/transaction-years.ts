@@ -1,6 +1,5 @@
-const puppeteer = require('puppeteer');
-
-import { getNetFilePage, getYearsRoot } from './shared-puppeteer';
+import puppeteer from 'puppeteer';
+import { getNetFilePage, getYearsRoot } from './shared-puppeteer.js';
 
 export const getTransactionYears = async (aid: string): Promise<string[]> => {
   const years: string[] = [];

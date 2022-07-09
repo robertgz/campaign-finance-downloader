@@ -1,7 +1,7 @@
-const playwright = require('playwright');
-const AdmZip = require("adm-zip");
+import playwright from 'playwright';
+import AdmZip from 'adm-zip';
 
-interface MetaData {
+export interface MetaData {
   aid: string;
   year: string;
   name: string;
@@ -28,6 +28,7 @@ export const getXLSXTransactions = async (aid: string, year: string) => {
   ]);
   
   const path = await download.path();
+  if (!path) return; // Should something be returned or an error thrown?
   const zip = new AdmZip(path);
   await browser.close();
  
@@ -42,7 +43,7 @@ export const getXLSXTransactions = async (aid: string, year: string) => {
     aid,
     year,
     name: expectedXLSXFile.entryName,
-    time: expectedXLSXFile.header.time,
+    time: expectedXLSXFile.header.time.toString(),
   };
 
   return { XLSXTransactionsFile, metaData }

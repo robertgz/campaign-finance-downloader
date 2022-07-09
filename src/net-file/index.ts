@@ -1,7 +1,7 @@
-import { getElectionTitles } from './elections'
-import { getCandidates, flattenCandidateTree } from './candidates'
-import { getTransactionYears } from './transaction-years';
-import { getXLSXTransactions } from './download-xlsx';
+import { getElectionTitles } from './elections.js'
+import { getCandidates, flattenCandidateTree } from './candidates.js'
+import { getTransactionYears } from './transaction-years.js';
+import { getXLSXTransactions } from './download-xlsx.js';
 
 const netFile = {
   getElectionTitles,

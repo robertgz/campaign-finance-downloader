@@ -1,6 +1,5 @@
-const puppeteer = require('puppeteer');
-
-import { getNetFilePage, getBranchText, getLiHandles, getElectionsRoot } from './shared-puppeteer';
+import puppeteer from 'puppeteer';
+import { getNetFilePage, getBranchText, getLiHandles, getElectionsRoot } from './shared-puppeteer.js';
 
 /**
  * aid - Example: "CSD"

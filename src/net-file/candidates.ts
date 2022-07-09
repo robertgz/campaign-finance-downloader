@@ -1,13 +1,13 @@
-const puppeteer = require('puppeteer');
+import puppeteer from 'puppeteer';
 import { ElementHandle, Page } from "puppeteer";
-import { getNetFilePage, getBranchText, getLiHandles, getElectionsRoot } from './shared-puppeteer';
+import { getNetFilePage, getBranchText, getLiHandles, getElectionsRoot } from './shared-puppeteer.js';
 
-interface ListItem {
+export interface ListItem {
   name: string;
   elements?: ListItem[];
 }
 
-interface Tree {
+export interface Tree {
   cycle: string;
   electionItems: ListItem[];
 }
@@ -141,7 +141,7 @@ async function getElectionCycleCandidates(aid: string, electionCycleTitle: strin
 }
 
 
-interface Candidate {
+export interface Candidate {
   candidateName: string;
   officeName: string;
   electionTitle: string;

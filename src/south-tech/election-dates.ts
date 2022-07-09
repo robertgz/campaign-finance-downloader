@@ -1,6 +1,6 @@
 import * as playwright from 'playwright';
 import { Locator, Page } from 'playwright';
-import { getSearchElectionPage } from './pages';
+import { getSearchElectionPage } from './pages.js';
 
 /**
  * pathSegment examples: SanDiegoCounty, DavisCity, SantaClaritaCity

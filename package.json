@@ -1,7 +1,7 @@
 {
-  "name": "election-data-scraper",
+  "name": "campaign-finance-downloader",
   "version": "0.0.0",
-  "description": "Library for scraping election from NetFile and SD eFile",
+  "description": "Library for scraping campaign finance data from multiple sources",
   "private": true,
   "main": "dist/cjs/index.js",
   "module": "dist/mjs/index.js",

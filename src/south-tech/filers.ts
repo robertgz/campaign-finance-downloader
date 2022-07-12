@@ -59,16 +59,21 @@ const getMultiPageFilers = async (page: Page): Promise<Filer[]> => {
 
 const goToDataPageNum = async (pageNumber: number, page: Page): Promise<void> => {
   const currentPageNumber = await getCurrentPageNum(page);
+  const newPageNumber = pageNumber + 1;
 
-  if (currentPageNumber === pageNumber) return;
+  if (currentPageNumber === newPageNumber) return;
 
-  const pageStr = `PN${pageNumber}`;
+  // PN# is zero indexed, pages number higher than the last page go to the last page
+  const pageStr = `PN${pageNumber}`; 
   const goToPageCommand = `ASPx.GVPagerOnClick('ctl00_GridContent_gridFilers','${pageStr}');`;
 
   await page.evaluate(goToPageCommand);
-  await page.waitForLoadState('networkidle');
+  const pageNumSelector = `b.dxp-current:has-text("${newPageNumber}")`;
+
+  await page.waitForSelector(pageNumSelector);
 }
 
+// Page numbers from getCurrentPageNum start at 1
 const getCurrentPageNum = async (page: Page): Promise<number> => {
   const currentPageLocator 
     = await page.locator(`#ctl00_GridContent_gridFilers_DXPagerBottom > .dxp-num.dxp-current`);
@@ -97,15 +102,16 @@ const selectDateOption = async (page: Page, electionDate: string): Promise<void>
 }
 
 const getTableData = async (page: Page) => {
-  const rows 
-    = await page.locator('#ctl00_GridContent_gridFilers_DXMainTable > tbody  > tr');
+  const rowSelector = '#ctl00_GridContent_gridFilers_DXMainTable > tbody  > tr';
+  const rows = await page.locator(rowSelector);
   
   const filerRows: Filer[] = [];
-  const startingRow = 3;
+  const startingRow = 4; // Skip the resize, header, and filter rows
   const count = await rows.count();
 
-  for (let i = startingRow; i < count; ++i) {
-    let rowArray = await getRow(await rows.nth(i).locator('> td'));
+  for (let i = startingRow; i <= count; ++i) {
+    // Index used for :nth-of-type is 1-based
+    const rowArray = await getRow(await page.locator(`${rowSelector}:nth-of-type(${i}) > td`));
     filerRows.push(createRowObject(rowArray));
   }
 

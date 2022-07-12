@@ -10,6 +10,7 @@ export const getWelcomePage = async (browser: Browser, pathSegment: string): Pro
   return page;
 }
 
+// SearchByElection Only shows the first 400 results.
 export const getSearchElectionPage = async (browser: Browser, pathSegment: string): Promise<Page> => {
   const pageURL = 
     `https://www.southtechhosting.com/${pathSegment}/CampaignDocsWebRetrieval/Search/SearchByElection.aspx`;

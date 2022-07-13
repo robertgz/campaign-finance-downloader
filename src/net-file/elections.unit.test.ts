@@ -1,4 +1,5 @@
 import { getElectionTitles } from "./elections";
+import { jest } from '@jest/globals'
 
 jest.setTimeout(10000);
 

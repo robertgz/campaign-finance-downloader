@@ -1,21 +1,22 @@
 
-import type { InitialOptionsTsJest } from 'ts-jest'
-import { defaults as tsjPreset } from 'ts-jest/presets'
+import type { Config } from "@jest/types";
 
-const config: InitialOptionsTsJest = {
+const config: Config.InitialOptions = {
   "roots": [
     "<rootDir>/src"
   ],
-  transform: {
-    ...tsjPreset.transform,
+  transform: {},
+  preset: "ts-jest/presets/js-with-ts-esm",
+  testEnvironment: "node",
+  verbose: true,
+  extensionsToTreatAsEsm: ['.ts'],
+  globals: {
+    'ts-jest': {
+      useESM: true,
+    },
   },
-  testEnvironment: 'node',
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1',
+  },
 }
-
-export default config
-
-// /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
-// module.exports = {
-//   preset: 'ts-jest',
-//   testEnvironment: 'node',
-// };
+export default config;

@@ -3,12 +3,12 @@ import * as playwright from 'playwright';
 import { Locator, Page } from 'playwright';
 import { getWelcomePage } from './pages.js';
 
-export const getAgencyName = async (pathSegment: string): Promise<string> => {
+export const getAgencyName = async (urlPrefix: string): Promise<string> => {
   const browser = await playwright.chromium.launch({
     headless: true,
   });
 
-  const page = await getWelcomePage(browser, pathSegment);
+  const page = await getWelcomePage(browser, urlPrefix);
   const agencyNameLocator = getAgencyNameSelector(page);
 
   const name = await agencyNameLocator.textContent();

@@ -5,12 +5,12 @@ import { getSearchElectionPage } from './pages.js';
 /**
  * pathSegment examples: SanDiegoCounty, DavisCity, SantaClaritaCity
  */
-export const getElectionDates = async (pathSegment: string): Promise<string[]> => {
+export const getElectionDates = async (urlPrefix: string): Promise<string[]> => {
   const browser = await playwright.chromium.launch({
     headless: true,
   });
  
-  const page = await getSearchElectionPage(browser, pathSegment);
+  const page = await getSearchElectionPage(browser, urlPrefix);
   const yearListLocator = getYearListSelector(page);
 
   const dates: string[] = [];

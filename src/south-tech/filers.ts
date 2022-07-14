@@ -17,12 +17,12 @@ export interface Filer {
  * electionDate in the format: M/D/YYYY
  *  examples: '6/7/2022',  '4/5/2022'
  */
-export const getFilers = async (pathSegment: string, electionDate: string): Promise<Filer[]> => {
+export const getFilers = async (urlPathPrefix: string, electionDate: string): Promise<Filer[]> => {
   const browser = await chromium.launch({
     headless: true,
   });
  
-  const page = await getSearchElectionPage(browser, pathSegment);
+  const page = await getSearchElectionPage(browser, urlPathPrefix);
 
   await selectDateOption(page, electionDate);
   await page.waitForLoadState('networkidle');

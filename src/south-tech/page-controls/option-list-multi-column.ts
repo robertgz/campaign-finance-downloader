@@ -1,20 +1,7 @@
 
 import { Page } from "playwright";
 import { areStringsEqual, buildObjects } from "../page-utils/map-utils";
-
-export interface OptionItemMultiColumn {
-  name: string
-  dataRowSelector: string
-  headerRowSelector: string
-  dropDownSelector: string
-}
-
-export const BallotList: OptionItemMultiColumn = {
-  name: 'ballotList',
-  dataRowSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_BallotItems_DDD_L_LBT',
-  headerRowSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_BallotItems_DDD_L_H',
-  dropDownSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_BallotItems_B-1',
-}
+import { OptionItemMultiColumn } from "./types";
 
 export const getMultiItemList = async (page: Page, optionItem: OptionItemMultiColumn): Promise<any[]>  => {
   const rows = await getItemRows(page, optionItem.dataRowSelector);

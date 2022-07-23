@@ -4,4 +4,5 @@ import  { southTech }  from './south-tech/index.js';
 export { 
   netFile as NetFile, 
   southTech as SouthTech,
+  southTech as eRetrieval,
 };

@@ -45,7 +45,7 @@ const getMultiPageFilers = async (page: Page): Promise<Filer[]> => {
     = await page.locator(`#ctl00_GridContent_gridFilers_DXPagerBottom > .dxp-num`);
    
   let allFilerRows: Filer[] = [];
-    
+
   const pageCount = await numberSelectors.count();
 
   for (let i = 0; i < pageCount; i++) {

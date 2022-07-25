@@ -2,6 +2,7 @@ import { jest } from '@jest/globals'
 import { getFilingYears, getJurisdictions, jurisdictionSearch as search} from "./search-by-jurisdiction";
 
 import { Agencies } from "../test-agencies";
+import { SearchResponse } from '../pages/search-by.js';
 
 describe('search by jurisdiction tests', () => {
   test(`should get a list of filing years`, async () => {
@@ -24,17 +25,17 @@ describe('search by jurisdiction tests', () => {
   }, 50000);
 
   test.only(`should get a list of filings for filingYear 2020 '`, async () => {
-    const result = await search(Agencies[0].urlPrefix, {filingYear: '2020'});
-    expect(Array.isArray(result)).toBe(true);
-    // console.log({result});
-    console.log({'result.length': result.length});
+    const result: SearchResponse = await search(Agencies[0].urlPrefix, {filingYear: '2020'});
+    expect(Array.isArray(result.results.data)).toBe(true);
+    console.log({result});
+    console.log({'result.length': result?.results?.data?.length});
   }, 50000);
 
   test(`should get a list of filings for filingYear 2022 and jurisdiction 'SAN DIEGO COMMUNITY COLLEGE'`, async () => {
     const result = await search(Agencies[0].urlPrefix, {filingYear: '2022', jurisdiction: 'SAN DIEGO COMMUNITY COLLEGE'});
-    expect(Array.isArray(result)).toBe(true);
+    expect(Array.isArray(result.results.data)).toBe(true);
     console.log({result});
-    console.log({'result.length': result.length});
+    console.log({'result.length': result?.results?.data?.length});
   }, 50000);
 });
 

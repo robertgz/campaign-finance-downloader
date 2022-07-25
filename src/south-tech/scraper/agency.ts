@@ -57,39 +57,49 @@ export class Agency {
     return results;
   }
 
-  // async getFilers(electionDate: string, ballotItem: string) {
-  //   return await searchBy.ballotItem.search(this.urlPrefix, {electionDate, ballotItem});
-  // }
-  async getFilers(filingYear: string, jurisdiction: string): Promise<ByJurisdiction[]>  {
-    // on some years this may not return all of the filers if the amount is > 400
-    // 1 get the count for a year but no a jurisdiction
-    // if results are < 400 the return them
-    // else get them one jurisdiction at a time
-    const response = await searchBy.jurisdiction.search(this.urlPrefix, {filingYear}) as ByJurisdiction[];
+  async getFilers(filingYear: string): Promise<ByJurisdiction[]>  {
 
-    let allFilers: ByJurisdiction[] | null = null;
-    // if (response.length < 400) {
-    //   return response;
-    // } else {
-    //   allFilers = response;
-    //   return allFilers;
-    // }
-    return response;
+    const response = await searchBy.jurisdiction.search(this.urlPrefix, {filingYear});
 
+    const allFilers: ByJurisdiction[] = [];
+  
+    if (response.status === 'Complete' && response.results.data) {
+      allFilers.push(...response.results.data);
+      console.log('Complete')
+    } else {
+      console.log('NOT Complete')
+
+      const jurisdictions = await (await this.getJurisdictions(filingYear)).slice(0, 10);
+
+      for await (const jurisdiction of jurisdictions) {
+        const jurisdictionResponse = await searchBy.jurisdiction.search(this.urlPrefix, {filingYear, jurisdiction});
+        if (jurisdictionResponse.results.data) {
+          console.log({'jurisdictionResponse.results.returned': jurisdictionResponse.results.returned})
+
+          allFilers.push(...jurisdictionResponse.results.data)
+        }
+      console.log({'allFilers.length': allFilers.length})
+
+      }
+    }
+    return allFilers;
   }
 
-  async getCandidates(filingYear: string, jurisdiction: string): Promise<ByJurisdiction[]>  {
-    let filers = await this.getFilers(filingYear, jurisdiction);
-    filers = filers.filter((filer) => filer.candidate_last_name !== '');
+  async getCandidates(filingYear: string): Promise<ByJurisdiction[]>  {
+    let filers = await this.getFilers(filingYear);
+    const candidates = filers.filter((filer) => filer.candidate_last_name !== '');
 
-    return filers;
+    return candidates;
   }
 
-// getCandidates will group the filers by same last name and each candidate can have 1 or more filers
+  async getCommittees(filingYear: string): Promise<ByJurisdiction[]>  {
+    let filers = await this.getFilers(filingYear);
+    const committees = filers.filter((filer) => filer.candidate_last_name === '');
+
+    return committees;
+  }
 
   async getFilings(filerName: string) {}
-
-
 
   static generatePathPrefix(url: string): UrlPrefixType {
     const endPosition = url.indexOf('/CampaignDocsWebRetrieval');

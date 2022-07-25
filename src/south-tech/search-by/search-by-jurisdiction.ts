@@ -4,6 +4,7 @@ import { setOption, validateOption } from "../page-controls/option-list";
 import { OptionSelectors } from "../constants/option-selectors";
 import { getList } from "../pages/list-items";
 import { doSearchByPage } from "../pages/search-by";
+import { ByJurisdiction, SearchResponse } from "./output-types.js";
 
 export interface FilingYearInput {
   /**
@@ -56,7 +57,7 @@ export const jurisdictionSearch = async (urlPathPrefix: string, inputOptions: Ju
     pageSuffix: SearchByPagePaths.Jurisdiction,
     inputOptions,
     applySearchOptions: setOptions,
-  });
+  }) as SearchResponse<ByJurisdiction[]>;
 }
 
 

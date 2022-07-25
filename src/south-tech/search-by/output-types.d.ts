@@ -87,3 +87,14 @@ export interface ByFiledForm {
 //   filing_period: string;
 //   export?: Buffer | null;
 // }
+
+
+export interface SearchResponse<T = unknown[]> {
+  status: string; // 'Complete' | 'Partial' | 'Error'
+  message: string | null;
+  results: {
+    data: T | null;
+    returned: number;
+    found: number;
+  };
+}

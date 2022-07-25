@@ -5,7 +5,9 @@ const { scraper } = eRetrieval;
 const { Agency } = scraper;
 
 ;(async () => {
-  const urlPrefix = Agency.generatePathPrefix('https://campaigndocs.co.fresno.ca.us/CampaignDocsWebRetrieval/Search/SearchByElection.aspx')
+  const url_SD = 'https://www.southtechhosting.com/SanDiegoCounty/CampaignDocsWebRetrieval/Search/SearchByJurisdiction.aspx';
+  const url_FR = 'https://campaigndocs.co.fresno.ca.us/CampaignDocsWebRetrieval/Search/SearchByElection.aspx';
+  const urlPrefix = Agency.generatePathPrefix(url_SD)
 
   const agency = await new Agency(urlPrefix);
   console.log({ agency: agency.urlPrefix })
@@ -28,8 +30,9 @@ const { Agency } = scraper;
 
   // const filers = await agency.getFilers('All', 'All');
   // console.log({ filers })
-  const filers = await agency.getFilers('2022', 'Washington Colony Elementary School District');
-  console.log({ filers })
+  const filers = await agency.getFilers('2020');
+  // console.log({ filers })
+  console.log({ 'filers.length': filers.length })
 
   // const filers2 = await agency.getCandidates('2022', 'Washington Colony Elementary School District');
   // console.log({ filers2 })

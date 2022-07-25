@@ -31,6 +31,7 @@ const getPageCountFromSummary = async (page: Page): Promise<number> => {
   return parseInt(countText);
 }
 
+// Pager Summary only shows if there is more than one page of results
 const getPagerSummaryText = async (page: Page): Promise<string> => {
   const summarySelector = '#ctl00_GridContent_gridFilers_DXPagerBottom > b.dxp-lead.dxp-summary';
   const summaryLocator = await page.locator(summarySelector);
@@ -39,7 +40,7 @@ const getPagerSummaryText = async (page: Page): Promise<string> => {
   return summaryText;
 }
 
-export const getResultsCount = async (page: Page): Promise<number> => {
+export const getPagerResultsCount = async (page: Page): Promise<number> => {
   const summaryText = await getPagerSummaryText(page);
 
   const countText = summaryText.split('(')[1].split(' ')[0].trim();

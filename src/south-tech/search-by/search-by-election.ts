@@ -1,25 +1,32 @@
 import { Page } from "playwright";
-import { SearchByPagePaths } from "../constants/search-by-page-paths";
 import { setOption, validateOption } from "../page-controls/option-list";
 import { OptionSelectors } from "../constants/option-selectors.js";
 import { getList } from "../pages/list-items.js";
 import { doSearchByPage } from "../pages/search-by";
+import type { ElectionDate, ElectionType, UrlPrefixType } from "../types";
 
-export interface ElectionTypeInput {
-  /**
-   * @examples 'Primary', 'General', 'Special', 'Recall'
-   */
-  electionType?: string
+export type ElectionTypesInput = {
+  urlPathPrefix: UrlPrefixType;
 }
 
-export interface ElectionOptions extends ElectionTypeInput {
-  electionType?: string
-  /**
-   * @format m/d/yyyy
-   * @examples '11/8/2022', '11/6/2018'
-   */
-  electionDate?: string
+export type ElectionDatesInput = {
+  urlPathPrefix: UrlPrefixType;
+  electionType?: ElectionType
 }
+
+export type ElectionSearchInput = {
+  urlPathPrefix: UrlPrefixType;
+  electionType?: ElectionType
+  electionDate?: ElectionDate
+}
+
+export type ElectionOptions = {
+  electionType?: ElectionType
+  electionDate?: ElectionDate
+}
+
+const PageRoute = 'Search/SearchByElection.aspx';
+
 const setOptions = async (page: Page, options: ElectionOptions): Promise<void> => {
   const {electionType, electionDate} = options;
 
@@ -35,29 +42,34 @@ const setOptions = async (page: Page, options: ElectionOptions): Promise<void> =
 
 }
 
-export const getElectionTypes = async (urlPathPrefix: string) => {
+export const getElectionTypes = async (input: ElectionTypesInput) => {
+  const {urlPathPrefix} = input;
+
   return await getList({
-    urlPathPrefix,
-    pageSuffix: SearchByPagePaths.Election,
+    urlPathPrefix: urlPathPrefix,
+    pageSuffix: PageRoute,
     optionSelector: OptionSelectors.electionType,
   });
 }
 
-export const getElectionDates = async (urlPathPrefix: string, inputOptions?: ElectionTypeInput) => {
+export const getElectionDates = async (input: ElectionDatesInput) => {
+  const {urlPathPrefix, electionType} = input;
+
   return await getList({
-    urlPathPrefix,
-    pageSuffix: SearchByPagePaths.Election,
+    urlPathPrefix: urlPathPrefix,
+    pageSuffix: PageRoute,
     optionSelector: OptionSelectors.electionDate,
-    inputOptions,
+    inputOptions: {electionType},
     applyListOptions: setOptions,
   });
 }
 
-export const electionSearch = async (urlPathPrefix: string, inputOptions: ElectionOptions) => {
+export const electionSearch = async (input: ElectionSearchInput) => {
+  const {urlPathPrefix, electionDate, electionType} = input;
   return await doSearchByPage({
-    urlPathPrefix,
-    pageSuffix: SearchByPagePaths.Election,
-    inputOptions,
+    urlPathPrefix: urlPathPrefix,
+    pageSuffix: PageRoute,
+    inputOptions: {electionDate, electionType},
     applySearchOptions: setOptions,
   });
 }

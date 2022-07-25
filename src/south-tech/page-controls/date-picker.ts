@@ -21,12 +21,6 @@ export const DatePickerElements: DatePickerElementsType = {
   },
 }
 
-export const validateDate = (item: DatePickerElement, date: string): void => {
-  const isValid = !isNaN(Date.parse(date));
-
-  if (!isValid) throw `Invalid  ${item.name} provided: ${date}`;
-}
-
 export const setDatePickerOption = async (page: Page, item: DatePickerElement, date: string) => {
   const dateSelector = `${item.itemID}`;
 

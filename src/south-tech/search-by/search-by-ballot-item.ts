@@ -3,11 +3,12 @@ import { Page } from "playwright";
 import { doSearchByPage } from "../pages/search-by";
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
 import { setOption, validateOption } from "../page-controls/option-list";
-import { getMultiColumnList } from "../pages/list-items-multi.js";
+import { getMultiColumnList, MultiListConfiguration } from "../pages/list-items-multi.js";
 import { OptionSelectors } from "../constants/option-selectors";
 import { setMultiColumnOption, validateMultiColumnOption } from "../page-controls/option-list-multi-column.js";
 import { getList } from "../pages/list-items";
 import { OptionSelectorsMultiColumn } from "../constants/option-multi-column-selectors";
+import { BallotItem } from "./output-types";
 
 
 export interface BallotItemSearch {
@@ -62,10 +63,9 @@ export const getElectionDates = async (urlPathPrefix: string, inputOptions: Elec
     applyListOptions: setOptions,
   });
 }
-
-export const getBallotItems = async (urlPathPrefix: string, inputOptions: BallotItemInput): Promise<string[]> => {
-
-  return await getMultiColumnList({
+//
+export const getBallotItems = async (urlPathPrefix: string, inputOptions: BallotItemInput): Promise<BallotItem[]> => {
+  return await getMultiColumnList<BallotItemInput, BallotItem>({
     urlPathPrefix,
     pageSuffix: SearchByPagePaths.BallotItem,
     optionSelector: OptionSelectorsMultiColumn.ballot,

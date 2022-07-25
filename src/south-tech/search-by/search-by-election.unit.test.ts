@@ -6,26 +6,26 @@ import { Agencies } from "../test-agencies";
 describe('search by election tests', () => {
   
   test(`should get a list of election types`, async () => {
-    const result = await getElectionTypes(Agencies[0].urlPrefix);
+    const result = await getElectionTypes({urlPathPrefix: Agencies[0].urlPrefix});
     expect(Array.isArray(result)).toBe(true);
     console.log({result});
   }, 50000);
 
   test(`should get a list of a subset of the election dates`, async () => {
-    const result = await getElectionDates(Agencies[0].urlPrefix, {electionType: 'General' });
+    const result = await getElectionDates({urlPathPrefix: Agencies[0].urlPrefix, electionType: 'General'});
     expect(Array.isArray(result)).toBe(true);
     console.log({result});
   }, 50000);
 
   test(`should get a all of the election dates`, async () => {
-    const result = await getElectionDates(Agencies[0].urlPrefix);
+    const result = await getElectionDates({urlPathPrefix: Agencies[0].urlPrefix});
     expect(Array.isArray(result)).toBe(true);
     console.log({result});
   }, 50000);
   
 
   test(`does search`, async () => {
-    const result = await search(Agencies[0].urlPrefix, {  electionDate: '6/7/2022' });
+    const result = await search({urlPathPrefix: Agencies[0].urlPrefix, electionDate: '6/7/2022' });
     expect(Array.isArray(result)).toBe(true);
     console.log({result});
   }, 50000);

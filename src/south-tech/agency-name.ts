@@ -2,8 +2,9 @@
 import * as playwright from 'playwright';
 import { Locator, Page } from 'playwright';
 import { getWelcomePage } from './pages.js';
+import { UrlPrefixType } from './types.js';
 
-export const getAgencyName = async (urlPrefix: string): Promise<string> => {
+export const getAgencyName = async (urlPrefix: UrlPrefixType): Promise<string> => {
   const browser = await playwright.chromium.launch({
     headless: true,
   });

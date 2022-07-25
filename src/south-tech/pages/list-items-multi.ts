@@ -13,7 +13,7 @@ export interface MultiListConfiguration<Type> extends UrlPathPrefix, PageSuffix 
   applyListOptions?: (page: Page, options: Type) => Promise<void>
 }
 
-export const getMultiColumnList = async <Type>(configuration: MultiListConfiguration<Type>) => {
+export const getMultiColumnList = async <Type, O>(configuration: MultiListConfiguration<Type>): Promise<O[]> => {
   const browser = await chromium.launch({
     headless: true,
   });
@@ -27,7 +27,7 @@ export const getMultiColumnList = async <Type>(configuration: MultiListConfigura
       await applyListOptions(page, inputOptions);
     }
 
-    const listItems = await getMultiItemList(page, optionSelector);
+    const listItems = await getMultiItemList<O>(page, optionSelector);
 
     return listItems;
   } catch (error) {

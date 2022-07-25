@@ -4,6 +4,7 @@ import { getForms } from './forms.js';
 import { getAgencyName } from './agency-name.js';
 import { getTransactions } from './transactions.js';
 import { searchBy }  from './search-by/index.js';
+import { scraper }  from './scraper';
 
 const southTech = {
   getAgencyName,
@@ -12,6 +13,7 @@ const southTech = {
   getForms,
   getTransactions,
   searchBy,
+  scraper,
 }
 
 export { southTech };

@@ -2,9 +2,10 @@
 import { Page } from "playwright";
 import { doSearchByPage } from "../pages/search-by";
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
-import { DatePickerElements, setDatePickerOption, validateDate } from "../page-controls/date-picker";
+import { DatePickerElements, setDatePickerOption } from "../page-controls/date-picker";
 import { OptionSelectors } from "../constants/option-selectors";
 import { setOption, validateOption } from "../page-controls/option-list";
+import { validateDate } from "../lib/validate-date";
 import { getList } from "../pages/list-items";
 
 export interface FormSearchOptions {

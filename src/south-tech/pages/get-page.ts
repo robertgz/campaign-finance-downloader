@@ -1,9 +1,9 @@
 import { Page, Browser } from 'playwright';
-import { PageSuffix, UrlPathPrefix } from '../types';
+import { PageSuffix, UrlPathPrefix, UrlPrefixType } from '../types';
 
-interface PageInput extends UrlPathPrefix {
+interface PageInput {
   browser: Browser
-  urlPathPrefix: string
+  urlPathPrefix: UrlPrefixType
   urlPathSuffix: PageSuffix['pageSuffix']
 }
 

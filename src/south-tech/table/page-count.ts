@@ -30,3 +30,19 @@ const getPageCountFromSummary = async (page: Page): Promise<number> => {
 
   return parseInt(countText);
 }
+
+const getPagerSummaryText = async (page: Page): Promise<string> => {
+  const summarySelector = '#ctl00_GridContent_gridFilers_DXPagerBottom > b.dxp-lead.dxp-summary';
+  const summaryLocator = await page.locator(summarySelector);
+  const summaryText = await summaryLocator.innerText();
+
+  return summaryText;
+}
+
+export const getResultsCount = async (page: Page): Promise<number> => {
+  const summaryText = await getPagerSummaryText(page);
+
+  const countText = summaryText.split('(')[1].split(' ')[0].trim();
+
+  return parseInt(countText);
+}

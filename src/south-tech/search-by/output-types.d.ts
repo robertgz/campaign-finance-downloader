@@ -30,6 +30,12 @@ export interface ByBallotItem {
   candidate_middle_name: string;
 }
 
+export interface BallotItem {
+  ballot_item: string;
+  jurisdiction: string;
+  district: string;
+}
+
 export interface ByElection {
   election_type: string;
   election_date: string;

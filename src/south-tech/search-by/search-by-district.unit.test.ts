@@ -1,5 +1,4 @@
 import { jest } from '@jest/globals'
-import { getFilingYears, getDistricts, districtSearch as search} from "./search-by-district.js";
 import * as district from "./search-by-district.js";
 
 import { Agencies } from "../test-agencies";
@@ -26,9 +25,16 @@ describe('search by Districts tests', () => {
 
   test(`should get a list of filings for filingYear 2021 and district 'HIGH SCHOOL'`, async () => {
     const result = await district.districtSearch(Agencies[0].urlPrefix, {filingYear: '2021', district: 'HIGH SCHOOL'});
-    expect(Array.isArray(result)).toBe(true);
+    expect(Array.isArray(result.results.data)).toBe(true);
     console.log({result});
-    console.log({'result.length': result.length});
+    console.log({'result.length': result?.results?.data?.length});
+  }, 50000);
+
+  test(`should get a list of filings for filingYear 2021`, async () => {
+    const result = await district.districtSearch(Agencies[0].urlPrefix, {filingYear: '2021'});
+    expect(Array.isArray(result.results.data)).toBe(true);
+    console.log({result});
+    console.log({'result.length': result?.results?.data?.length});
   }, 50000);
 });
 

@@ -1,4 +1,5 @@
 import { Page } from "playwright";
+import { InputItemDatePicker } from "../constants/option-selectors.js";
 
 export interface DatePickerElement {
   name: string
@@ -23,6 +24,12 @@ export const DatePickerElements: DatePickerElementsType = {
 
 export const setDatePickerOption = async (page: Page, item: DatePickerElement, date: string) => {
   const dateSelector = `${item.itemID}`;
+
+  await page.fill(dateSelector, date);
+}
+
+export const setDatePickerOption2 = async (page: Page, item: InputItemDatePicker, date: string) => {
+  const dateSelector = `${item.inputSelector}`;
 
   await page.fill(dateSelector, date);
 }

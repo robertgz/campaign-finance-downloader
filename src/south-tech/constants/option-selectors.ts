@@ -43,86 +43,127 @@ export const OptionSelectors: OptionCollectionType = {
   },
 }
 
-/////////////////
-type InputOptionItem = keyof OptionItemsCollectionType
-
-export const getOptionItem = (key: InputOptionItem): OptionItemSingleColumn | OptionItemMultiColumn => {
-  return OptionItemsCollection[key];
+/////// NEW //////////
+export enum InputItemCategory {
+  SingleColumnList,
+  MultipleColumnList,
+  DatePicker,
+  Text,
+  Checkbox,
 }
 
-enum Columns {
-  Single,
-  Multiple,
-}
-
-export interface OptionItemCommon {
+export interface InputItemCommon {
   name: string
-  dropDownSelector: string
-  columns: Columns
+  category: InputItemCategory
 }
 
-export interface OptionItemSingleColumn extends OptionItemCommon {
+export interface InputItemList extends InputItemCommon {
+  dropDownSelector: string
+}
+
+export interface InputItemSingleColumn extends InputItemList {
   listSelector: string  
 }
 
-export interface OptionItemMultiColumn extends OptionItemCommon {
+export interface InputItemMultiColumn extends InputItemList {
   dataRowSelector: string
   headerRowSelector: string
 }
 
-export interface OptionItemsCollectionType {
-  filingYear: OptionItemSingleColumn
-  electionDate: OptionItemSingleColumn
-  electionType: OptionItemSingleColumn
-  jurisdiction: OptionItemSingleColumn
-  district: OptionItemSingleColumn
-  form: OptionItemSingleColumn
-  ballotItem: OptionItemMultiColumn
+export interface InputItemDatePicker extends InputItemCommon {
+  inputSelector: string
 }
 
+export interface InputItemText extends InputItemCommon {
+  inputSelector: string
+}
 
-export const OptionItemsCollection: OptionItemsCollectionType = {
+export interface InputItemCheckbox extends InputItemCommon {
+  inputSelector: string
+}
+
+export interface OptionItemsCollectionType {
+  filingYear: InputItemSingleColumn
+  electionDate: InputItemSingleColumn
+  electionType: InputItemSingleColumn
+  jurisdiction: InputItemSingleColumn
+  district: InputItemSingleColumn
+  form: InputItemSingleColumn
+  ballotItem: InputItemMultiColumn
+  formFromDate: InputItemDatePicker
+  formToDate: InputItemDatePicker
+  allowPartialMatch: InputItemCheckbox
+  text: InputItemText
+}
+
+export type InputOptionItem = keyof OptionItemsCollectionType
+
+export const getOptionItem = (key: InputOptionItem): InputItemSingleColumn | InputItemMultiColumn | InputItemDatePicker => {
+  return OptionItemsCollection[key];
+}
+
+const OptionItemsCollection: OptionItemsCollectionType = {
   filingYear: {
     name: 'filingYear',
     listSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_Years_DDD_L_LBT',
     dropDownSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_Years_B-1',
-    columns: Columns.Single,
+    category: InputItemCategory.SingleColumnList,
   },
   electionDate: {
     name: 'electionDate',
     listSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_ElectionDate_DDD_L_LBT',
     dropDownSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_ElectionDate_B-1',
-    columns: Columns.Single,
+    category: InputItemCategory.SingleColumnList,
   },
   electionType: {
     name: 'electionType',
     listSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_ElectionType_DDD_L_LBT',
     dropDownSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_ElectionType_B-1',
-    columns: Columns.Single,
+    category: InputItemCategory.SingleColumnList,
   },
   jurisdiction: {
     name: 'jurisdiction',
     listSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_Jurisdiction_DDD_L_LBT ',
     dropDownSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_Jurisdiction_B-1',
-    columns: Columns.Single,
+    category: InputItemCategory.SingleColumnList,
   },
   district: {
     name: 'district',
     listSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_Districts_DDD_L_LBT',
     dropDownSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_Districts_B-1',
-    columns: Columns.Single,
+    category: InputItemCategory.SingleColumnList,
   },
   form: {
     name: 'form',
     listSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_Forms_DDD_L_LBT',
     dropDownSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_Forms_B-1',
-    columns: Columns.Single,
+    category: InputItemCategory.SingleColumnList,
   },
   ballotItem: {
     name: 'ballotList',
     dataRowSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_BallotItems_DDD_L_LBT',
     headerRowSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_BallotItems_DDD_L_H',
     dropDownSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_BallotItems_B-1',
-    columns: Columns.Multiple,
+    category: InputItemCategory.MultipleColumnList,
+  },
+  formFromDate: {
+    name: 'fromDate',
+    inputSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_Cal_FormDate_From_I',
+    category: InputItemCategory.DatePicker,
+  },
+  formToDate: {
+    name: 'toDate',
+    inputSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_Cal_FormDate_To_I',
+    category: InputItemCategory.DatePicker,
+  },
+  allowPartialMatch: {
+    name: 'allowPartialMatch',
+    inputSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_chbAllowPartialMatch_S_D',
+    category: InputItemCategory.Checkbox,
+  },
+  text: {
+    name: 'text',
+    inputSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_txtFilerName_I',
+    category: InputItemCategory.Text,
   },
 }

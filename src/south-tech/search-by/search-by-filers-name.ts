@@ -7,12 +7,15 @@ import { OptionSelectors } from "../constants/option-selectors";
 import { getList } from "../pages/list-items";
 import { setAllowPartialMatch } from "../page-controls/partial-match";
 import { setInputText } from '../page-controls/input';
+import { OptionTypes } from "../page-controls/apply-options.js";
 
 export interface FilersNameSearch {
   filingYear?: string
   filerName?: string
   allowPartialMatch?: boolean
 }
+
+// export type FilersNameSearch2 = Pick<OptionTypes, "filingYear" | "filerName" | "allowPartialMatch">;
 
 const setOptions = async (page: Page, options: FilersNameSearch): Promise<void> => {
   const {filingYear, filerName, allowPartialMatch } = options;
@@ -44,7 +47,7 @@ export const filersNameSearch = async (urlPathPrefix: string, inputOptions: File
     urlPathPrefix,
     pageSuffix: SearchByPagePaths.FilerName,
     inputOptions,
-    applySearchOptions: setOptions,
+    // applySearchOptions: setOptions,
   });
 }
 

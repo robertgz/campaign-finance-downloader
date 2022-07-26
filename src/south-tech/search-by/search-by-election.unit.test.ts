@@ -1,32 +1,33 @@
 import { jest } from '@jest/globals'
-import { electionSearch as search, getElectionDates, getElectionTypes} from "./search-by-election";
+import * as election from "./search-by-election.js";
 
 import { Agencies } from "../test-agencies";
+const urlPrefix = Agencies[0].urlPrefix;
 
 describe('search by election tests', () => {
   
   test(`should get a list of election types`, async () => {
-    const result = await getElectionTypes({urlPathPrefix: Agencies[0].urlPrefix});
+    const result = await election.getElectionTypes(urlPrefix);
     expect(Array.isArray(result)).toBe(true);
     console.log({result});
   }, 50000);
 
   test(`should get a list of a subset of the election dates`, async () => {
-    const result = await getElectionDates({urlPathPrefix: Agencies[0].urlPrefix, electionType: 'General'});
+    const result = await election.getElectionDates(urlPrefix, {electionType: 'General'});
     expect(Array.isArray(result)).toBe(true);
     console.log({result});
   }, 50000);
 
   test(`should get a all of the election dates`, async () => {
-    const result = await getElectionDates({urlPathPrefix: Agencies[0].urlPrefix});
+    const result = await election.getElectionDates(urlPrefix, {});
     expect(Array.isArray(result)).toBe(true);
     console.log({result});
   }, 50000);
-  
+
 
   test(`does search`, async () => {
-    const result = await search({urlPathPrefix: Agencies[0].urlPrefix, electionDate: '6/7/2022' });
-    expect(Array.isArray(result)).toBe(true);
+    const result = await election.electionSearch(urlPrefix, {electionDate: '6/7/2022'});
+    expect(Array.isArray(result.results.data)).toBe(true);
     console.log({result});
   }, 50000);
   

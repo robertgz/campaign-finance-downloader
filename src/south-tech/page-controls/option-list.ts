@@ -1,5 +1,6 @@
 
 import { Page } from "playwright";
+import { InputItemSingleColumn } from "../constants/option-selectors.js";
 import { OptionItem } from "./types";
 
 export const getOptionList = async (page: Page, optionItem: OptionItem): Promise<string[]>  => {
@@ -9,7 +10,7 @@ export const getOptionList = async (page: Page, optionItem: OptionItem): Promise
   return await locator.allInnerTexts();
 }
 
-export const validateOption = async (page: Page, optionItem: OptionItem, item: string): Promise<void> => {
+export const validateOption = async (page: Page, optionItem: OptionItem | InputItemSingleColumn, item: string): Promise<void> => {
   const items = await getOptionList(page, optionItem);
   const isValid = items.includes(item);
 

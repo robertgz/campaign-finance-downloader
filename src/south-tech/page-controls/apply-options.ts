@@ -1,10 +1,9 @@
 import { Page } from "playwright";
-import { validateDate, validateDate2 } from "../lib/validate-date.js";
 import { getOptionItem, InputItemMultiColumn, OptionItemsCollectionType, InputItemSingleColumn, InputItemCategory, InputItemDatePicker, InputItemCheckbox, InputItemText } from "../constants/option-selectors";
-import { setDatePickerOption, setDatePickerOption2 } from "./date-picker.js";
 import { setOption, validateOption } from "./option-list";
 import { setMultiColumnOption, validateMultiColumnOption } from "./option-list-multi-column.js";
 import { setAllowPartialMatch2 } from "./partial-match.js";
+import { setDatePickerOption, validateDate } from "./date-picker.js";
 import { setInputText } from "./input.js";
 
 export interface InputOption {
@@ -20,7 +19,7 @@ export const createGeneralInputOptions = (options: OptionTypes): InputOption[] =
   return Object.entries(options).map(([key, value]) => ({key, value})) as InputOption[];
 }
 
-export const applyListOptions2 = async (page: Page, options: InputOption[]): Promise<void> => {
+export const applyListOptions = async (page: Page, options: InputOption[]): Promise<void> => {
   for await (const {key, value} of options) {
     const option = getOptionItem(key);
 
@@ -31,8 +30,8 @@ export const applyListOptions2 = async (page: Page, options: InputOption[]): Pro
       await validateMultiColumnOption(page, option as InputItemMultiColumn, value);
       await setMultiColumnOption(page, option as InputItemMultiColumn, value);
     } else if (option.category === InputItemCategory.DatePicker) {
-      validateDate2(option as InputItemDatePicker, value);
-      await setDatePickerOption2(page, option as InputItemDatePicker, value);
+      validateDate(option as InputItemDatePicker, value);
+      await setDatePickerOption(page, option as InputItemDatePicker, value);
     } else if (option.category === InputItemCategory.Text) {
       await setInputText(page, option as InputItemText, value);
     } else if (option.category === InputItemCategory.Checkbox) {

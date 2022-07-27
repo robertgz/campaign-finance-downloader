@@ -6,7 +6,7 @@ import { getPageCount } from "../table/page-count"
 import { clickSearchButton } from "../page-controls/search-button"
 import { getSearchPage } from "./get-page.js"
 import { SearchResponse } from "../search-by/output-types.js"
-import { applyListOptions2, createGeneralInputOptions } from "../page-controls/apply-options.js"
+import { applyListOptions, createGeneralInputOptions } from "../page-controls/apply-options.js"
 
 interface SearchConfiguration<Type> extends UrlPathPrefix, PageSuffix {
   urlPathPrefix: string
@@ -42,9 +42,8 @@ export const doSearchByPage = async <Type>(configuration: SearchConfiguration<Ty
     let page = await getSearchPage(browser, urlPathPrefix, pageSuffix);
 
     if (inputOptions) {
-      // await applySearchOptions(page, inputOptions);
       const generalInputOptions = createGeneralInputOptions(inputOptions);
-      await applyListOptions2(page, generalInputOptions)
+      await applyListOptions(page, generalInputOptions)
     }
 
     await clickSearchButton(page);

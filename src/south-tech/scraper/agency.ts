@@ -1,6 +1,6 @@
 
 import { getAgencyName } from "../agency-name";
-import { BallotItem, ByJurisdiction } from "../search-by/output-types";
+import { BallotItem, ByJurisdiction, SearchResponse } from "../search-by/output-types";
 import { searchBy } from "../search-by";
 import type { UrlPrefixType } from "../types";
 
@@ -17,7 +17,7 @@ export class Agency {
   }
 
   async updateElectionDates() {
-    const results = await searchBy.election.getElectionDates({urlPathPrefix: this.urlPrefix});
+    const results = await searchBy.election.getElectionDates(this.urlPrefix, {});
     this.electionDates = results.filter((item) => !isNaN(Date.parse(item)));
   }
 
@@ -59,7 +59,8 @@ export class Agency {
 
   async getFilers(filingYear: string): Promise<ByJurisdiction[]>  {
 
-    const response = await searchBy.jurisdiction.search(this.urlPrefix, {filingYear});
+    const response = await searchBy
+      .jurisdiction.search(this.urlPrefix, {filingYear}) as SearchResponse<ByJurisdiction[]>;
 
     const allFilers: ByJurisdiction[] = [];
   
@@ -72,7 +73,8 @@ export class Agency {
       const jurisdictions = await (await this.getJurisdictions(filingYear)).slice(0, 10);
 
       for await (const jurisdiction of jurisdictions) {
-        const jurisdictionResponse = await searchBy.jurisdiction.search(this.urlPrefix, {filingYear, jurisdiction});
+        const jurisdictionResponse = await searchBy
+          .jurisdiction.search(this.urlPrefix, {filingYear, jurisdiction}) as SearchResponse<ByJurisdiction[]>;
         if (jurisdictionResponse.results.data) {
           console.log({'jurisdictionResponse.results.returned': jurisdictionResponse.results.returned})
 

@@ -32,7 +32,7 @@ export const jurisdictionSearch = async (urlPathPrefix: string, inputOptions: Ju
     urlPathPrefix,
     pageSuffix,
     inputOptions,
-  })// as SearchResponse<ByJurisdiction[]>;
+  });
 }
 
 

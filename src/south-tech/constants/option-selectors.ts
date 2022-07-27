@@ -93,7 +93,8 @@ export interface OptionItemsCollectionType {
   formFromDate: InputItemDatePicker
   formToDate: InputItemDatePicker
   allowPartialMatch: InputItemCheckbox
-  text: InputItemText
+  filerName: InputItemText
+  candidateLastName: InputItemText
 }
 
 export type InputOptionItem = keyof OptionItemsCollectionType
@@ -161,8 +162,13 @@ const OptionItemsCollection: OptionItemsCollectionType = {
     inputSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_chbAllowPartialMatch_S_D',
     category: InputItemCategory.Checkbox,
   },
-  text: {
-    name: 'text',
+  filerName: {
+    name: 'filerName',
+    inputSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_txtFilerName_I',
+    category: InputItemCategory.Text,
+  },
+  candidateLastName: {
+    name: 'candidateLastName',
     inputSelector: '#ctl00_DefaultContent_ASPxRoundPanel1_txtFilerName_I',
     category: InputItemCategory.Text,
   },

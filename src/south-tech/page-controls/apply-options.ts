@@ -1,10 +1,11 @@
 import { Page } from "playwright";
 import { validateDate, validateDate2 } from "../lib/validate-date.js";
-import { getOptionItem, InputItemMultiColumn, OptionItemsCollectionType, InputItemSingleColumn, InputItemCategory, InputItemDatePicker, InputItemCheckbox } from "../constants/option-selectors";
+import { getOptionItem, InputItemMultiColumn, OptionItemsCollectionType, InputItemSingleColumn, InputItemCategory, InputItemDatePicker, InputItemCheckbox, InputItemText } from "../constants/option-selectors";
 import { setDatePickerOption, setDatePickerOption2 } from "./date-picker.js";
 import { setOption, validateOption } from "./option-list";
 import { setMultiColumnOption, validateMultiColumnOption } from "./option-list-multi-column.js";
 import { setAllowPartialMatch2 } from "./partial-match.js";
+import { setInputText } from "./input.js";
 
 export interface InputOption {
   key: keyof OptionItemsCollectionType;
@@ -33,7 +34,7 @@ export const applyListOptions2 = async (page: Page, options: InputOption[]): Pro
       validateDate2(option as InputItemDatePicker, value);
       await setDatePickerOption2(page, option as InputItemDatePicker, value);
     } else if (option.category === InputItemCategory.Text) {
-      
+      await setInputText(page, option as InputItemText, value);
     } else if (option.category === InputItemCategory.Checkbox) {
       await setAllowPartialMatch2(page, option as InputItemCheckbox, value);
     }

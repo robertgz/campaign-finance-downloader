@@ -1,35 +1,11 @@
 
-import { Page } from 'playwright';
 import { doSearchByPage } from '../pages/search-by';
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
-import { setOption, validateOption } from '../page-controls/option-list';
 import { OptionSelectors } from '../constants/option-selectors';
 import { getList } from '../pages/list-items';
-import { setAllowPartialMatch } from '../page-controls/partial-match';
-import { setInputText } from '../page-controls/input';
+import { OptionTypes } from '../page-controls/apply-options';
 
-export interface CandidateLastNameSearch {
-  filingYear?: string
-  candidateLastName?: string
-  allowPartialMatch?: boolean
-}
-
-const setOptions = async (page: Page, options: CandidateLastNameSearch): Promise<void> => {
-  const {filingYear, candidateLastName, allowPartialMatch} = options;
-
-  if (filingYear) {
-    await validateOption(page, OptionSelectors.filingYear, filingYear);
-    await setOption(page, OptionSelectors.filingYear, filingYear);
-  }
-
-  if (candidateLastName) {
-    await setInputText(page, candidateLastName);
-  }
-
-  if (allowPartialMatch !== undefined) {
-    await setAllowPartialMatch(page, allowPartialMatch);
-  }
-}
+export type CandidateLastNameSearch = Pick<OptionTypes, "filingYear" | "candidateLastName" | "allowPartialMatch">;
 
 export const getFilingYears = async (urlPathPrefix: string): Promise<String[]> => {
   return await getList({
@@ -44,7 +20,6 @@ export const lastNameSearch = async (urlPathPrefix: string, inputOptions: Candid
     urlPathPrefix,
     pageSuffix: SearchByPagePaths.CandidateLastName,
     inputOptions,
-    applySearchOptions: setOptions,
   });
 }
 

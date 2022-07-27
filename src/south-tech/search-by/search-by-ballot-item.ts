@@ -1,85 +1,49 @@
 
-import { Page } from "playwright";
+import { getList } from "../pages/list-items";
+import { getMultiColumnList } from "../pages/list-items-multi.js";
 import { doSearchByPage } from "../pages/search-by";
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
-import { setOption, validateOption } from "../page-controls/option-list";
-import { getMultiColumnList, MultiListConfiguration } from "../pages/list-items-multi.js";
-import { OptionSelectors } from "../constants/option-selectors";
-import { setMultiColumnOption, validateMultiColumnOption } from "../page-controls/option-list-multi-column.js";
-import { getList } from "../pages/list-items";
-import { OptionSelectorsMultiColumn } from "../constants/option-multi-column-selectors";
-import { BallotItem } from "./output-types";
+import { OptionItemsCollection } from "../constants/option-selectors";
+import type { BallotItem } from "./output-types";
+import type { OptionTypes } from "../page-controls/apply-options.js";
 
+export type ElectionDateInput = Pick<OptionTypes, "electionType">;
+export type BallotItemInput = Pick<OptionTypes, "electionType" | "electionDate">;
+export type BallotItemSearch = Pick<OptionTypes, "electionType" | "electionDate" | "ballotItem">;
 
-export interface BallotItemSearch {
-  electionType?: string
-  electionDate?: string
-  ballotItem?: string
-}
-
-export interface ElectionDateInput {
-  electionType?: string
-}
-
-export interface BallotItemInput {
-  electionType?: string
-  electionDate?: string
-}
-
-
-const setOptions = async (page: Page, ballotItemSearch: BallotItemSearch): Promise<void> => {
-  const {electionType, electionDate, ballotItem} = ballotItemSearch;
-
-  if (electionType) {
-    await validateOption(page, OptionSelectors.electionType, electionType);
-    await setOption(page, OptionSelectors.electionType, electionType);
-  }
-
-  if (electionDate) {
-    await validateOption(page, OptionSelectors.electionDate, electionDate);
-    await setOption(page, OptionSelectors.electionDate, electionDate);
-  }
-
-  if (ballotItem) {
-    await validateMultiColumnOption(page, OptionSelectorsMultiColumn.ballot, ballotItem);
-    await setMultiColumnOption(page, OptionSelectorsMultiColumn.ballot, ballotItem);
-  }
-}
+const pageSuffix = SearchByPagePaths.BallotItem;
 
 export const getElectionTypes = async (urlPathPrefix: string): Promise<string[]> => {
   return await getList({
     urlPathPrefix,
-    pageSuffix: SearchByPagePaths.BallotItem,
-    optionSelector: OptionSelectors.electionType,
+    pageSuffix,
+    optionSelector: OptionItemsCollection.electionType,
   });
 }
 
 export const getElectionDates = async (urlPathPrefix: string, inputOptions: ElectionDateInput): Promise<string[]> => {
   return await getList({
     urlPathPrefix,
-    pageSuffix: SearchByPagePaths.BallotItem,
-    optionSelector: OptionSelectors.electionDate,
+    pageSuffix,
+    optionSelector: OptionItemsCollection.electionDate,
     inputOptions,
-    applyListOptions: setOptions,
   });
 }
-//
+
 export const getBallotItems = async (urlPathPrefix: string, inputOptions: BallotItemInput): Promise<BallotItem[]> => {
   return await getMultiColumnList<BallotItemInput, BallotItem>({
     urlPathPrefix,
-    pageSuffix: SearchByPagePaths.BallotItem,
-    optionSelector: OptionSelectorsMultiColumn.ballot,
+    pageSuffix,
+    optionSelector: OptionItemsCollection.ballotItem,
     inputOptions,
-    applyListOptions: setOptions,
   });
 }
 
 export const ballotItemSearch = async (urlPathPrefix: string, inputOptions: BallotItemSearch) => {
   return await doSearchByPage({
     urlPathPrefix,
-    pageSuffix: SearchByPagePaths.BallotItem,
+    pageSuffix,
     inputOptions,
-    applySearchOptions: setOptions,
   });
 }
 

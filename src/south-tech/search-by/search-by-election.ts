@@ -1,6 +1,7 @@
-import { OptionSelectors } from "../constants/option-selectors.js";
+
 import { getList } from "../pages/list-items.js";
 import { doSearchByPage } from "../pages/search-by";
+import { OptionItemsCollection } from "../constants/option-selectors.js";
 import type { OptionTypes } from "../page-controls/apply-options.js";
 
 export type GetElectionDatesOptions = Pick<OptionTypes, "electionType">;
@@ -12,7 +13,7 @@ export const getElectionTypes = async (urlPathPrefix: string) => {
   return await getList({
     urlPathPrefix: urlPathPrefix,
     pageSuffix: PageRoute,
-    optionSelector: OptionSelectors.electionType,
+    optionSelector: OptionItemsCollection.electionType,
   });
 }
 
@@ -20,7 +21,7 @@ export const getElectionDates = async (urlPathPrefix: string, options: GetElecti
   return await getList({
     urlPathPrefix: urlPathPrefix,
     pageSuffix: PageRoute,
-    optionSelector: OptionSelectors.electionDate,
+    optionSelector: OptionItemsCollection.electionDate,
     inputOptions: options,
   });
 }

@@ -1,26 +1,28 @@
 
-import { SearchByPagePaths } from "../constants/search-by-page-paths";
-import { OptionSelectors } from "../constants/option-selectors";
 import { getList } from "../pages/list-items";
 import { doSearchByPage } from "../pages/search-by";
-import { OptionTypes } from "../page-controls/apply-options.js";
+import { SearchByPagePaths } from "../constants/search-by-page-paths";
+import { OptionItemsCollection } from "../constants/option-selectors";
+import type { OptionTypes } from "../page-controls/apply-options.js";
 
 export type FilingYearInput = Pick<OptionTypes, "filingYear">;
 export type JurisdictionOptions = Pick<OptionTypes, "filingYear" | "jurisdiction">;
 
+const pageSuffix = SearchByPagePaths.Jurisdiction;
+
 export const getFilingYears = async (urlPathPrefix: string) => {
   return await getList({
     urlPathPrefix,
-    pageSuffix: SearchByPagePaths.Jurisdiction,
-    optionSelector: OptionSelectors.filingYear,
+    pageSuffix,
+    optionSelector: OptionItemsCollection.filingYear,
   });
 }
 
 export const getJurisdictions = async (urlPathPrefix: string, filingYearInput: FilingYearInput) => {
   return await getList({
     urlPathPrefix,
-    pageSuffix: SearchByPagePaths.Jurisdiction,
-    optionSelector: OptionSelectors.jurisdiction,
+    pageSuffix,
+    optionSelector: OptionItemsCollection.jurisdiction,
     inputOptions: filingYearInput,
   });
 }
@@ -28,7 +30,7 @@ export const getJurisdictions = async (urlPathPrefix: string, filingYearInput: F
 export const jurisdictionSearch = async (urlPathPrefix: string, inputOptions: JurisdictionOptions) => {
   return await doSearchByPage({
     urlPathPrefix,
-    pageSuffix: SearchByPagePaths.Jurisdiction,
+    pageSuffix,
     inputOptions,
   })// as SearchResponse<ByJurisdiction[]>;
 }

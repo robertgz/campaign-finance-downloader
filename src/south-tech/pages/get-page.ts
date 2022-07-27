@@ -16,6 +16,18 @@ export const getSearchPage = async (browser: Browser, urlPathPrefix: string, pag
   });
 }
 
+interface UrlInput {
+  urlPathPrefix: UrlPrefixType
+  urlPathSuffix: PageSuffix['pageSuffix']
+}
+
+export const gotoPage = async (page: Page, { urlPathPrefix, urlPathSuffix }: UrlInput): Promise<Page> => {
+  const pageURL = getPageUrl(urlPathPrefix);
+  await page.goto(`${pageURL}/${urlPathSuffix}`);
+
+  return page;
+}
+
 // Searches Only show the first 400 results.
 export const getPage = async ({ urlPathPrefix, browser, urlPathSuffix }: PageInput): Promise<Page>  => {
   const pageURL = getPageUrl(urlPathPrefix);
@@ -23,7 +35,7 @@ export const getPage = async ({ urlPathPrefix, browser, urlPathSuffix }: PageInp
   await page.goto(`${pageURL}/${urlPathSuffix}`);
 
   return page;
-} 
+}
 
 const getPageUrl = (urlPathPrefix: string): string => {
   let urlPathPrefixNoSlashes = trimSlashes(urlPathPrefix);

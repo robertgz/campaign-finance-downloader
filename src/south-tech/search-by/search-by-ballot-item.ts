@@ -1,11 +1,9 @@
 
 import { getList } from "../pages/list-items";
-import { getMultiColumnList } from "../pages/list-items-multi.js";
 import { doSearchByPage } from "../pages/search-by";
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
 import { OptionItemsCollection } from "../constants/option-selectors";
-import type { BallotItem } from "./output-types";
-import type { OptionTypes } from "../page-controls/apply-options.js";
+import type { OptionTypes } from "../page-utils/apply-options.js";
 
 export type ElectionDateInput = Pick<OptionTypes, "electionType">;
 export type BallotItemInput = Pick<OptionTypes, "electionType" | "electionDate">;
@@ -13,30 +11,30 @@ export type BallotItemSearch = Pick<OptionTypes, "electionType" | "electionDate"
 
 const pageSuffix = SearchByPagePaths.BallotItem;
 
-export const getElectionTypes = async (urlPathPrefix: string): Promise<string[]> => {
+export const getElectionTypes = async (urlPathPrefix: string) => {
   return await getList({
     urlPathPrefix,
     pageSuffix,
     optionSelector: OptionItemsCollection.electionType,
-  });
+  }) as string[];
 }
 
-export const getElectionDates = async (urlPathPrefix: string, inputOptions: ElectionDateInput): Promise<string[]> => {
+export const getElectionDates = async (urlPathPrefix: string, inputOptions: ElectionDateInput) => {
   return await getList({
     urlPathPrefix,
     pageSuffix,
     optionSelector: OptionItemsCollection.electionDate,
     inputOptions,
-  });
+  }) as string[];
 }
 
-export const getBallotItems = async (urlPathPrefix: string, inputOptions: BallotItemInput): Promise<BallotItem[]> => {
-  return await getMultiColumnList<BallotItemInput, BallotItem>({
+export const getBallotItems = async (urlPathPrefix: string, inputOptions: BallotItemInput) => {
+  return await getList({
     urlPathPrefix,
     pageSuffix,
     optionSelector: OptionItemsCollection.ballotItem,
     inputOptions,
-  });
+  }) as string[][];
 }
 
 export const ballotItemSearch = async (urlPathPrefix: string, inputOptions: BallotItemSearch) => {

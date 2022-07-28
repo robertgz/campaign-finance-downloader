@@ -2,7 +2,7 @@
 import { getList } from "../pages/list-items.js";
 import { doSearchByPage } from "../pages/search-by";
 import { OptionItemsCollection } from "../constants/option-selectors.js";
-import type { OptionTypes } from "../page-controls/apply-options.js";
+import type { OptionTypes } from "../page-utils/apply-options.js";
 
 export type GetElectionDatesOptions = Pick<OptionTypes, "electionType">;
 export type ElectionSearchOptions = Pick<OptionTypes, "electionType" | "electionDate">;

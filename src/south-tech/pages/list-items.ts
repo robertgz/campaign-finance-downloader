@@ -1,14 +1,14 @@
 import { BrowserContext, chromium } from "playwright";
-import { getOptionList } from "../page-controls/option-list.js";
 import { gotoPage } from "./get-page.js";
 import { PageSuffix, UrlPathPrefix } from "../types.js";
-import { applyListOptions, createGeneralInputOptions } from "../page-controls/apply-options.js";
-import { InputItemSingleColumn } from "../constants/option-selectors.js";
+import { applyListOptions, createGeneralInputOptions } from "../page-utils/apply-options.js";
+import { InputItemCommon } from "../constants/option-selectors.js";
+import { getOptionAny } from "../page-utils/get-option.js";
 
 export interface ListConfiguration<Type> extends UrlPathPrefix, PageSuffix {
   urlPathPrefix: string
   pageSuffix: string
-  optionSelector: InputItemSingleColumn
+  optionSelector: InputItemCommon
   inputOptions?: Type
 }
 
@@ -20,7 +20,8 @@ export const getList = async <Type>(configuration: ListConfiguration<Type>) => {
   try {
     const context = await browser.newContext();
 
-    return await getListFromContext(context, configuration);
+    const response = await getListFromContext(context, configuration);
+    return response ? response : [];
   } catch (error) {
     console.log(error);
 
@@ -41,5 +42,5 @@ export const getListFromContext = async <Type>(context: BrowserContext, configur
     const generalInputOptions = createGeneralInputOptions(inputOptions);
     await applyListOptions(page, generalInputOptions)
   }
-  return await getOptionList(page, optionSelector);
+  return await getOptionAny(page, optionSelector);
 }

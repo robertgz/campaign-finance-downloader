@@ -71,7 +71,7 @@ describe('Search by Ballot Item', () => {
 
   }, 50000);
 
-  test.only(`ballotItemSearch with electionDate, should get over 400`, async () => {
+  test(`ballotItemSearch with electionDate, should get over 400`, async () => {
     const result = await ballotItem.ballotItemSearch(urlPrefix, { electionDate: '11/3/2020'});
     expect(Array.isArray(result.results.data)).toBe(true);
 

@@ -1,10 +1,10 @@
 import { Page } from "playwright";
 import { getOptionItem, InputItemMultiColumn, OptionItemsCollectionType, InputItemSingleColumn, InputItemCategory, InputItemDatePicker, InputItemCheckbox, InputItemText } from "../constants/option-selectors";
-import { setOption, validateOption } from "./option-list";
-import { setMultiColumnOption, validateMultiColumnOption } from "./option-list-multi-column.js";
-import { setAllowPartialMatch2 } from "./partial-match.js";
-import { setDatePickerOption, validateDate } from "./date-picker.js";
-import { setInputText } from "./input.js";
+import { setOption, validateOption } from "../page-controls/option-list";
+import { setMultiColumnOption, validateMultiColumnOption } from "../page-controls/option-list-multi-column.js";
+import { setAllowPartialMatch2 } from "../page-controls/partial-match.js";
+import { setDatePickerOption, validateDate } from "../page-controls/date-picker.js";
+import { setInputText } from "../page-controls/input.js";
 
 export interface InputOption {
   key: keyof OptionItemsCollectionType;

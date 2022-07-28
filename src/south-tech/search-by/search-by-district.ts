@@ -3,29 +3,29 @@ import { getList } from "../pages/list-items";
 import { doSearchByPage } from "../pages/search-by";
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
 import { OptionItemsCollection } from "../constants/option-selectors";
-import type { OptionTypes } from "../page-controls/apply-options.js";
+import type { OptionTypes } from "../page-utils/apply-options.js";
 
 export type GetDistrictsOptions = Pick<OptionTypes, "filingYear">;
 export type DistrictSearchOptions = Pick<OptionTypes, "filingYear" | "district">;
 
 const pageSuffix = SearchByPagePaths.District;
 
-export const getFilingYears = async (urlPathPrefix: string): Promise<string[]> => {
+export const getFilingYears = async (urlPathPrefix: string) => {
   return await getList({
     urlPathPrefix,
     pageSuffix,
     optionSelector: OptionItemsCollection.filingYear,
-  });
+  }) as string[];
 }
 
-export const getDistricts = async (urlPathPrefix: string, inputOptions: GetDistrictsOptions): Promise<string[]> => {
+export const getDistricts = async (urlPathPrefix: string, inputOptions: GetDistrictsOptions) => {
 
   return await getList({
     urlPathPrefix,
     pageSuffix,
     optionSelector: OptionItemsCollection.district,
     inputOptions,
-  });
+  }) as string[];
 }
 
 export const districtSearch = async (urlPathPrefix: string, inputOptions: DistrictSearchOptions) => {

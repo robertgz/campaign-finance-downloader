@@ -3,11 +3,11 @@ import { Page } from "playwright";
 import { InputItemMultiColumn } from "../constants/option-selectors";
 import { areStringsEqual, buildObjects } from "../page-utils/map-utils";
 
-export const getMultiItemList = async <O>(page: Page, optionItem: InputItemMultiColumn): Promise<O[]>  => {
+export const getMultiItemList = async (page: Page, optionItem: InputItemMultiColumn) => {
   const rows = await getItemRows(page, optionItem.dataRowSelector);
   const headerRow = await getHeaderRow(page, optionItem.headerRowSelector);
 
-  return buildObjects<O>(rows, headerRow);
+  return buildObjects(rows, headerRow) as string[][];
 }
 
 const getHeaderRow = async (page: Page, selectorID: string): Promise<string[]> => {

@@ -1,5 +1,5 @@
 
-import { getList } from "../pages/list-items";
+import { getList } from "../pages/get-list";
 import { doSearchByPage } from "../pages/search-by";
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
 import { OptionItemsCollection } from "../constants/option-selectors";

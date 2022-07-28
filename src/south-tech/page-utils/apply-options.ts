@@ -1,19 +1,30 @@
 import { Page } from "playwright";
-import { getOptionItem, InputItemMultiColumn, OptionItemsCollectionType, InputItemSingleColumn, InputItemCategory, InputItemDatePicker, InputItemCheckbox, InputItemText } from "../constants/option-selectors";
+import {
+  getOptionItem,
+  InputItemMultiColumn,
+  OptionItemsCollectionType,
+  InputItemSingleColumn,
+  InputItemCategory,
+  InputItemDatePicker,
+  InputItemCheckbox,
+  InputItemText,
+  OptionTypes,
+  InputOption,
+} from "../constants/option-selectors";
 import { setOption, validateOption } from "../page-controls/option-list";
 import { setMultiColumnOption, validateMultiColumnOption } from "../page-controls/option-list-multi-column.js";
 import { setAllowPartialMatch2 } from "../page-controls/partial-match.js";
 import { setDatePickerOption, validateDate } from "../page-controls/date-picker.js";
 import { setInputText } from "../page-controls/input.js";
 
-export interface InputOption {
-  key: keyof OptionItemsCollectionType;
-  value: string;
-}
+// export interface InputOption {
+//   key: keyof OptionItemsCollectionType;
+//   value: string;
+// }
 
-export type OptionTypes = {
-  [Property in keyof OptionItemsCollectionType]?: string;
-}
+// export type OptionTypes = {
+//   [Property in keyof OptionItemsCollectionType]?: string;
+// }
 
 export const createGeneralInputOptions = (options: OptionTypes): InputOption[] => {
   return Object.entries(options).map(([key, value]) => ({key, value})) as InputOption[];
@@ -23,6 +34,7 @@ export const applyListOptions = async (page: Page, options: InputOption[]): Prom
   for await (const {key, value} of options) {
     const option = getOptionItem(key);
 
+    // change to a switch case
     if (option.category === InputItemCategory.SingleColumnList) {
       await validateOption(page, option as InputItemSingleColumn, value);
       await setOption(page, option as InputItemSingleColumn, value);

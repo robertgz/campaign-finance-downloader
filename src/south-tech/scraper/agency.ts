@@ -17,7 +17,7 @@ export class Agency {
   }
 
   async updateElectionDates() {
-    const results = await searchBy.election.getElectionDates(this.urlPrefix, {});
+    const results = await searchBy.election.getElectionDates(this.urlPrefix, {}) as string[];
     this.electionDates = results.filter((item) => !isNaN(Date.parse(item)));
   }
 
@@ -43,7 +43,7 @@ export class Agency {
 
   async getBallotItems(electionDate: string, jurisdictionFilter?: string) {
     let results: BallotItem[] = await searchBy.ballotItem
-      .getBallotItems(this.urlPrefix, {electionDate});
+      .getBallotItems(this.urlPrefix, {electionDate}) as BallotItem[];
 
     if (jurisdictionFilter) {
       const filter = jurisdictionFilter.toLocaleUpperCase();

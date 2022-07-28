@@ -1,9 +1,8 @@
 
-import { getList } from "../pages/list-items";
+import { getList } from "../pages/get-list";
 import { doSearchByPage } from "../pages/search-by";
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
-import { OptionItemsCollection } from "../constants/option-selectors";
-import { OptionTypes } from "../page-utils/apply-options.js";
+import { OptionItemsCollection, OptionTypes } from "../constants/option-selectors";
 
 export type FormSearchOptions = Pick<OptionTypes, "form" | "formFromDate" | "formToDate">;
 

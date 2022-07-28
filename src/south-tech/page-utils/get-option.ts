@@ -1,6 +1,14 @@
 
 import { Page } from "playwright";
-import { getOptionItem, InputItemCategory, InputItemCommon, InputItemMultiColumn, InputItemSingleColumn, InputOptionItem } from "../constants/option-selectors.js";
+import { BallotItem } from "../search-by/output-types.js";
+import {
+  getOptionItem,
+  InputItemCategory,
+  InputItemCommon,
+  InputItemMultiColumn,
+  InputItemSingleColumn,
+  InputOptionItem,
+} from "../constants/option-selectors.js";
 import { getMultiItemList } from "../page-controls/option-list-multi-column.js";
 import { getOptionList } from "../page-controls/option-list.js";
 
@@ -20,6 +28,10 @@ export const getOptionAny = async (page: Page, option: InputItemCommon)  => {
       break;
     case InputItemCategory.MultipleColumnList:
       result = await getMultiItemList(page, option as InputItemMultiColumn);
+
+      if (option.name == 'ballotItem') {
+        result = await getMultiItemList<BallotItem>(page, option as InputItemMultiColumn);
+      }
       break;
     // case InputItemCategory.DatePicker:
     //   break;

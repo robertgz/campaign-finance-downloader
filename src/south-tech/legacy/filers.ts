@@ -1,5 +1,5 @@
 import { Page, chromium, Locator } from 'playwright';
-import { getSearchElectionPage } from './pages.js';
+import { getSearchElectionPage } from '../pages.js';
 
 export interface Filer {
   election_type: string;

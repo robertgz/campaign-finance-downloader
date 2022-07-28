@@ -1,5 +1,5 @@
 
-import { getList } from "../pages/list-items.js";
+import { getList } from "../pages/get-list.js";
 import { doSearchByPage } from "../pages/search-by";
 import { OptionItemsCollection } from "../constants/option-selectors.js";
 import type { OptionTypes } from "../page-utils/apply-options.js";

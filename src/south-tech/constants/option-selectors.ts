@@ -58,6 +58,17 @@ export const getOptionItem = (key: InputOptionItem) => {
   return OptionItemsCollection[key];
 }
 
+export interface InputOption {
+  // key: keyof OptionItemsCollectionType;
+  key: InputOptionItem;
+  value: string;
+}
+
+export type OptionTypes = {
+  // [Property in keyof OptionItemsCollectionType]?: string;
+  [Property in InputOptionItem]?: string;
+}
+
 export const OptionItemsCollection: OptionItemsCollectionType = {
   filingYear: {
     name: 'filingYear',

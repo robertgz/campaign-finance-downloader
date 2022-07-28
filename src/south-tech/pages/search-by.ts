@@ -6,9 +6,15 @@ import { getPageCount } from "../table/page-count"
 import { clickSearchButton } from "../page-controls/search-button"
 import { getSearchPage, gotoPage } from "./get-page.js"
 import { SearchResponse } from "../search-by/output-types.js"
-import { applyListOptions, createGeneralInputOptions, OptionTypes } from "../page-utils/apply-options.js"
-import { getListFromContext } from "./list-items.js"
-import { getOptionItem, InputItemMultiColumn, InputItemSingleColumn, OptionItemsCollection } from "../constants/option-selectors.js"
+import { applyListOptions, createGeneralInputOptions,  } from "../page-utils/apply-options.js"
+import { getListFromContext } from "./get-list.js"
+import {
+  getOptionItem,
+  InputItemMultiColumn,
+  InputItemSingleColumn,
+  OptionItemsCollection,
+  OptionTypes,
+} from "../constants/option-selectors.js";
 
 interface SearchConfiguration<Type> extends UrlPathPrefix, PageSuffix {
   urlPathPrefix: string

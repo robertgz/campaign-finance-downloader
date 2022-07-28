@@ -1,15 +1,15 @@
 
-import { chromium, Page } from "playwright";
-import { OptionItemMultiColumn } from "../page-controls/types.js";
+import { chromium } from "playwright";
 import { getMultiItemList } from "../page-controls/option-list-multi-column.js";
 import { getSearchPage } from "./get-page.js";
 import { PageSuffix, UrlPathPrefix } from "../types.js";
 import { applyListOptions, createGeneralInputOptions } from "../page-controls/apply-options.js";
+import { InputItemMultiColumn } from "../constants/option-selectors.js";
 
 export interface MultiListConfiguration<Type> extends UrlPathPrefix, PageSuffix {
   urlPathPrefix: string
   pageSuffix: string
-  optionSelector: OptionItemMultiColumn
+  optionSelector: InputItemMultiColumn
   inputOptions?: Type
 }
 

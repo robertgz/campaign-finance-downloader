@@ -44,6 +44,9 @@ export const ballotItemSearch = async (urlPathPrefix: string, inputOptions: Ball
     urlPathPrefix,
     pageSuffix,
     inputOptions,
+    // fallBackOptions: {
+    //   itemToGetAll: "ballotItem"
+    // }
   });
 }
 

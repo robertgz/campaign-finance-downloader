@@ -54,7 +54,7 @@ export interface OptionItemsCollectionType {
 
 export type InputOptionItem = keyof OptionItemsCollectionType
 
-export const getOptionItem = (key: InputOptionItem): InputItemSingleColumn | InputItemMultiColumn | InputItemDatePicker => {
+export const getOptionItem = (key: InputOptionItem) => {
   return OptionItemsCollection[key];
 }
 

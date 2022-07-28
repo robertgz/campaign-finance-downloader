@@ -1,9 +1,9 @@
 
 import { Page } from "playwright";
+import { InputItemMultiColumn } from "../constants/option-selectors";
 import { areStringsEqual, buildObjects } from "../page-utils/map-utils";
-import { OptionItemMultiColumn } from "./types";
 
-export const getMultiItemList = async <O>(page: Page, optionItem: OptionItemMultiColumn): Promise<O[]>  => {
+export const getMultiItemList = async <O>(page: Page, optionItem: InputItemMultiColumn): Promise<O[]>  => {
   const rows = await getItemRows(page, optionItem.dataRowSelector);
   const headerRow = await getHeaderRow(page, optionItem.headerRowSelector);
 
@@ -41,7 +41,7 @@ const normalizeItemsList = (list: string[]) => {
   return responseList;
 }
 
-export const validateMultiColumnOption = async (page: Page, optionItem: OptionItemMultiColumn, input: string): Promise<void> => {
+export const validateMultiColumnOption = async (page: Page, optionItem: InputItemMultiColumn, input: string): Promise<void> => {
   const items = await getItemRows(page, optionItem.dataRowSelector);
   const isValid = items
     .some((item) => areStringsEqual(item[0], input));
@@ -49,7 +49,7 @@ export const validateMultiColumnOption = async (page: Page, optionItem: OptionIt
   if (!isValid) throw `Invalid ${optionItem.name} provided: ${input}`;
 }
 
-export const setMultiColumnOption = async (page: Page, optionItem: OptionItemMultiColumn, input: string): Promise<void> => {
+export const setMultiColumnOption = async (page: Page, optionItem: InputItemMultiColumn, input: string): Promise<void> => {
   await page.locator(`${optionItem.dropDownSelector}`).click();
   await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td:has-text("${input}")`).click();
 

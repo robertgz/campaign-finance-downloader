@@ -71,6 +71,16 @@ describe('Search by Ballot Item', () => {
 
   }, 50000);
 
+  test.only(`ballotItemSearch with electionDate, should get over 400`, async () => {
+    const result = await ballotItem.ballotItemSearch(urlPrefix, { electionDate: '11/3/2020'});
+    expect(Array.isArray(result.results.data)).toBe(true);
+
+    // expect(result.results?.data?.length > 0).toBe(true);
+    console.log({result: result.results.data?.slice(0,10)});
+    console.log({'result.length': result.results.data?.length});
+
+  }, 50000);
+
 });
 
 // npm run test  ./src/south-tech/search-by/search-by-ballot-item.unit.test.ts

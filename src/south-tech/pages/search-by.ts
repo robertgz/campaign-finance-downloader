@@ -177,14 +177,32 @@ export const doSearchByPage = async <Type>(configuration: SearchConfiguration<Ty
   }
 }
 
+// possible outcome of search
+/**
+ * page loaded, no options selected:  popupSelector exists with:
+ *  style="height:150px;width:400px;cursor:default;z-index:10000;display:none;visibility:hidden;"
+ * less than 10 on a single page, no total items count
+ * up to 400 on multiple pages, total items count shown,
+ * over 400 on multiple pages, total items count shown,
+ *  style="height: 150px; width: 400px; cursor: default; z-index: 12000; visibility: visible; display: table; position: absolute; left: 595px; top: 252px;"
+ */
+
+/**
+ * number of results: 0 = popup visibility: visible
+ * number of results: 1 - 10 = single page
+ * number of results: 11 - 400 = multiple pages
+ * number of results: 400+ = popup visibility: visible
+ */
 const getResultsCount = async (page: Page): Promise<number>  => {
   const popupSelector = `#ctl00_GridContent_popupCantContinueDialog_PW-1`;
-  console.log('Wait started')
-  await page.waitForSelector(popupSelector);
-  await page.waitForLoadState('networkidle');
+  // console.log('Wait started')
+  // await page.waitForSelector(popupSelector);
+  // await page.waitForLoadState('networkidle');
 // this works inconsistently, depending on if the pop up never shows 
-  console.log('Wait done')
+  // console.log('Wait done')
+  console.log('getResultsCount')
   const isTooMany = await page.locator(popupSelector).isVisible();
+  console.log({isTooMany})
 
   let count: number = -1;
   if (isTooMany) {

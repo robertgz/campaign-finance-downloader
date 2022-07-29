@@ -1,6 +1,5 @@
 
 import { Page } from "playwright";
-import { BallotItem } from "../search-by/output-types.js";
 import {
   getOptionItem,
   InputItemCategory,
@@ -28,10 +27,6 @@ export const getOptionAny = async (page: Page, option: InputItemCommon)  => {
       break;
     case InputItemCategory.MultipleColumnList:
       result = await getMultiItemList(page, option as InputItemMultiColumn);
-
-      if (option.name == 'ballotItem') {
-        result = await getMultiItemList<BallotItem>(page, option as InputItemMultiColumn);
-      }
       break;
     // case InputItemCategory.DatePicker:
     //   break;

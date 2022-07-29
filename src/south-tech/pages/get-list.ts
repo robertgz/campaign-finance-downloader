@@ -5,25 +5,15 @@ import { applyListOptions, createGeneralInputOptions } from "../page-utils/apply
 import { InputItemCommon, OptionTypes } from "../constants/option-selectors.js";
 import { getOptionAny } from "../page-utils/get-option.js";
 
-export interface ListConfiguration<Type> extends UrlPathPrefix, PageSuffix {
+export interface ListConfiguration extends UrlPathPrefix, PageSuffix {
   urlPathPrefix: string
   pageSuffix: string
   optionSelector: InputItemCommon
-  // inputOptions?: Type
   inputOptions?: OptionTypes
 }
 
-// interface abc {
-//   inputOptions: OptionTypes
-// }
-// const item: abc = {
-//   inputOptions: {
-//     ballotItem: 'abc'
-//   }
-// }
-
 // entry function from multiple search-by pages
-export const getList = async <InputType, OutputType>(configuration: ListConfiguration<InputType>) => {
+export const getList = async (configuration: ListConfiguration) => {
   const browser = await chromium.launch({
     headless: true,
   });
@@ -31,7 +21,7 @@ export const getList = async <InputType, OutputType>(configuration: ListConfigur
   try {
     const context = await browser.newContext();
 
-    const response = await getListFromContext<InputType>(context, configuration);
+    const response = await getListFromContext(context, configuration);
     return response ? response : [];
   } catch (error) {
     console.log(error);
@@ -42,7 +32,7 @@ export const getList = async <InputType, OutputType>(configuration: ListConfigur
   }
 }
 
-export const getListFromContext = async <InputType>(context: BrowserContext, configuration: ListConfiguration<InputType>) => {
+export const getListFromContext = async (context: BrowserContext, configuration: ListConfiguration) => {
 
   const {urlPathPrefix, pageSuffix, optionSelector, inputOptions} = configuration;
 
@@ -53,5 +43,5 @@ export const getListFromContext = async <InputType>(context: BrowserContext, con
     const generalInputOptions = createGeneralInputOptions(inputOptions);
     await applyListOptions(page, generalInputOptions)
   }
-  return await getOptionAny(page, optionSelector);
+  return await getOptionAny(page, optionSelector); //get here
 }

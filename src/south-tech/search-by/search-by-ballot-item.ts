@@ -3,6 +3,7 @@ import { getList } from "../pages/get-list";
 import { doSearchByPage } from "../pages/search-by";
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
 import { OptionItemsCollection, OptionTypes } from "../constants/option-selectors";
+import { BallotItem } from "./output-types";
 
 export type ElectionDateInput = Pick<OptionTypes, "electionType">;
 export type BallotItemInput = Pick<OptionTypes, "electionType" | "electionDate">;
@@ -33,7 +34,7 @@ export const getBallotItems = async (urlPathPrefix: string, inputOptions: Ballot
     pageSuffix,
     optionSelector: OptionItemsCollection.ballotItem,
     inputOptions,
-  }) as unknown[];
+  }) as BallotItem[];
 }
 
 export const ballotItemSearch = async (urlPathPrefix: string, inputOptions: BallotItemSearch) => {

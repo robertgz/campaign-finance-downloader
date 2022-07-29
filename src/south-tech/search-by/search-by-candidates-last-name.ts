@@ -2,8 +2,7 @@
 import { getList } from '../pages/get-list';
 import { doSearchByPage } from '../pages/search-by';
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
-import { OptionItemsCollection } from '../constants/option-selectors';
-import type { OptionTypes } from '../page-utils/apply-options';
+import { OptionItemsCollection, OptionTypes } from '../constants/option-selectors';
 
 export type CandidateLastNameSearch = Pick<OptionTypes, "filingYear" | "candidateLastName" | "allowPartialMatch">;
 

@@ -1,4 +1,4 @@
-import { BrowserContext, chromium, Page } from "playwright"
+import { BrowserContext, chromium, Page, Response } from "playwright"
 import { PageSuffix, UrlPathPrefix } from "../types.js"
 import { getAllPagesData, getHeaderRow } from "../table/results-table"
 import { buildObjects } from "../page-utils/map-utils"
@@ -28,18 +28,23 @@ interface SearchConfiguration<Type> extends UrlPathPrefix, PageSuffix {
 
 const doSearchByPageBrowser = async <Type>(configuration: SearchConfiguration<Type>) => {
   const browser = await chromium.launch({
-    headless: true,
+    headless: false,
   });
+
+  console.log('doSearchByPageBrowser')
+
   
   try {
     const context = await browser.newContext();
+  console.log('doSearchByPageBrowser -> doSearchFromContext')
+
     const { data, resultsCount } = await doSearchFromContext(context, configuration);
 
     const partialResultsFound = resultsCount > data.length;
 
     // console.log({ resultsCount })
     // console.log({ "data.length": data.length })
-    // console.log({ partialResultsFound })
+    console.log({ partialResultsFound })
     // console.log({ status: configuration.fallBackOptions?.itemToGetAll })
 
     // if (partialResultsFound && configuration.fallBackOptions?.itemToGetAll) {
@@ -80,11 +85,11 @@ const doSearchByPageBrowser = async <Type>(configuration: SearchConfiguration<Ty
       }
     };
 
-    // console.log({error});
+    console.log({error});
 
     return response;
   } finally {
-    await browser.close();
+    // await browser.close();
   }
 }
 
@@ -104,7 +109,12 @@ const doSearchFromPage = async (page: Page, inputOptions: any) => {
     await applyListOptions(page, generalInputOptions);
   }
 
-  await clickSearchButton(page);
+  console.log('doSearchFromPage => clickSearchButton');
+
+  const response = await clickSearchButton(page);
+
+  await useResponse(page, response);
+
 
   const resultsCount = await getResultsCount(page);
   const pageCount = await getPageCount(page);
@@ -210,6 +220,37 @@ const getResultsCount = async (page: Page): Promise<number>  => {
     const countText = await page.locator(selector).innerText();
     count = parseInt(countText);
   }
+
+  return count;
+}
+
+export const useResponse = async (page: Page, response: Response) => {
+  console.log('useResponse started');
+
+  console.log({waitResponse: response.statusText});
+
+  // const body = await response.body()
+  // console.log({'response.body': body});
+
+  const text = await response.text();
+  // console.log({'response.text': text});
+
+  const context = page.context();
+  const newPage = await context.newPage();
+  await newPage.setContent(text, { waitUntil: 'load' });
+
+  await getDataRowCount(page);
+
+  console.log('useResponse end');
+}
+
+export const getDataRowCount = async (page: Page) => {
+  const selector = '#ctl00_GridContent_gridFilers_DXMainTable > tbody  > tr.dxgvDataRow_Glass';
+  const locator = await page.locator(selector);
+
+  const count = (await locator.count()); 
+
+  console.log({ count });
 
   return count;
 }

@@ -51,7 +51,13 @@ export const validateMultiColumnOption = async (page: Page, optionItem: InputIte
 
 export const setMultiColumnOption = async (page: Page, optionItem: InputItemMultiColumn, input: string): Promise<void> => {
   await page.locator(`${optionItem.dropDownSelector}`).click();
-  await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td:has-text("${input}")`).click();
+  // await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td:has-text("${input}")`).click();
+  // await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td :text("${input}")`).click();
+  
+  await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td >> text=${input}`).click();
+  // await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td >> text="${input}"`).click();
+  
+  // await page.locator(`#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_BallotItems_DDD_L_LBT > tbody > tr > td:text="${input}")`).click();
 
   await page.waitForLoadState('networkidle');
 }

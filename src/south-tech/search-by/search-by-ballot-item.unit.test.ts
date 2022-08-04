@@ -62,7 +62,7 @@ describe('Search by Ballot Item', () => {
   // }, 50000);
 
   test(`ballotItemSearch with electionDate and ballotItem input, should get 0 results`, async () => {
-    const result = await ballotItem.ballotItemSearch(urlPrefix, { electionDate: '3/3/2026', ballotItem: 'CONTROLLER'});
+    const result = await ballotItem.ballotItemSearch(urlPrefix, { electionDate: '6/7/2022', ballotItem: 'CONTROLLER'});
     expect(Array.isArray(result.results.data)).toBe(true);
     // expect(result?.results?.data?.length > 0).toBe(true);
     expect(result.results.data?.length === 0 ).toBe(true);
@@ -73,7 +73,7 @@ describe('Search by Ballot Item', () => {
     console.log({'result.length.returned': result.results.returned});
   }, 50000);
 
-  test(`ballotItemSearch with electionDate and ballotItem, should get 2 results`, async () => {
+  test.only(`ballotItemSearch with electionDate and ballotItem, should get 2 results`, async () => {
     const result = await ballotItem.ballotItemSearch(urlPrefix, { electionDate: '6/7/2022', ballotItem: 'ASSESSOR RECORDER county CLERK'});
     expect(Array.isArray(result.results.data)).toBe(true);
     expect(result.results?.data?.length === 2).toBe(true);

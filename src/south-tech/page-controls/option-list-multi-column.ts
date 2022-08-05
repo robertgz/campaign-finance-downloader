@@ -54,7 +54,8 @@ export const setMultiColumnOption = async (page: Page, optionItem: InputItemMult
   // await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td:has-text("${input}")`).click();
   // await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td :text("${input}")`).click();
   
-  await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td >> text=${input}`).click();
+  // await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td >> text=${input}`).click(); // not strict, allows partial matches
+  await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td >> text=/^${input}$/i`).click(); // finds complete line and is case insensitive
   // await page.locator(`${optionItem.dataRowSelector} > tbody > tr > td >> text="${input}"`).click();
   
   // await page.locator(`#ctl00_DefaultContent_ASPxRoundPanel1_ASPxDDL_BallotItems_DDD_L_LBT > tbody > tr > td:text="${input}")`).click();

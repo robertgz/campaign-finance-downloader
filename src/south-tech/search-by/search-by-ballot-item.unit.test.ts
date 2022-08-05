@@ -73,7 +73,7 @@ describe('Search by Ballot Item', () => {
     console.log({'result.length.returned': result.results.returned});
   }, 50000);
 
-  test.only(`ballotItemSearch with electionDate and ballotItem, should get 2 results`, async () => {
+  test(`ballotItemSearch with electionDate and ballotItem, should get 2 results`, async () => {
     const result = await ballotItem.ballotItemSearch(urlPrefix, { electionDate: '6/7/2022', ballotItem: 'ASSESSOR RECORDER county CLERK'});
     expect(Array.isArray(result.results.data)).toBe(true);
     expect(result.results?.data?.length === 2).toBe(true);
@@ -86,16 +86,18 @@ describe('Search by Ballot Item', () => {
 
   test(`ballotItemSearch with electionDate and ballotItem, should get 18 results`, async () => {
     const result = await ballotItem.ballotItemSearch(urlPrefix, { electionDate: '3/5/2024'});
-    expect(Array.isArray(result.results.data)).toBe(true);
-    expect(result.results?.data?.length ===18).toBe(true);
 
-    // console.log({result: result.results.data?.slice(0,3)});
+    console.log({result: result});
+    console.log({result: result.results.data?.slice(0,3)});
     console.log({'result.length': result.results.data?.length});
     console.log({'result.length.found': result.results.found});
     console.log({'result.length.returned': result.results.returned});
+
+    expect(Array.isArray(result.results.data)).toBe(true);
+    expect(result.results.data?.length === 18).toBe(true);
   }, 50000);
 
-  test(`ballotItemSearch with electionDate, should get over 400`, async () => {
+  test.only(`ballotItemSearch with electionDate, should get over 400`, async () => {
     const result = await ballotItem.ballotItemSearch(urlPrefix, { electionDate: '11/3/2020'});
     
     // console.log({result: result.results.data?.slice(0,3)});
@@ -105,7 +107,7 @@ describe('Search by Ballot Item', () => {
     
     expect(Array.isArray(result.results.data)).toBe(true);
     expect(result.results?.found > 400).toBe(true);
-  }, 50000);
+  }, 120000);
 
 });
 

@@ -1,4 +1,4 @@
-import { BrowserContext, chromium, Locator, Page, Response } from "playwright"
+import { Browser, BrowserContext, chromium, Locator, Page, Response } from "playwright"
 import { PageSuffix, UrlPathPrefix } from "../types.js"
 import { getAllPagesData, getHeaderRow } from "../table/results-table"
 import { buildObjects } from "../page-utils/map-utils"
@@ -15,6 +15,8 @@ import {
   OptionItemsCollection,
   OptionTypes,
 } from "../constants/option-selectors.js";
+import { getPopupMessageHTML } from "../page-utils/popup-message.js"
+import { getResultsCount } from "../table/item-count.js"
 
 interface SearchConfiguration<Type> extends UrlPathPrefix, PageSuffix {
   urlPathPrefix: string
@@ -26,40 +28,31 @@ interface SearchConfiguration<Type> extends UrlPathPrefix, PageSuffix {
   }
 }
 
-const doSearchByPageBrowser = async <Type>(configuration: SearchConfiguration<Type>) => {
+export const doSearchByPage = async <Type>(configuration: SearchConfiguration<Type>): Promise<SearchResponse>  => {
   const browser = await chromium.launch({
     headless: false,
   });
 
-  console.log('doSearchByPageBrowser')
+  // console.log('doSearchByPageBrowser')
 
-  
   try {
     const context = await browser.newContext();
-  console.log('doSearchByPageBrowser -> doSearchFromContext')
+  // console.log('doSearchByPageBrowser -> doSearchFromContext')
 
     const { data, resultsCount } = await doSearchFromContext(context, configuration);
+    await context.close();
 
-    const partialResultsFound = resultsCount > data.length;
+    const partialResultsFound = resultsCount > data.length; // resultsCount should be determined before running: doSearchFromContext!
 
     // console.log({ resultsCount })
     // console.log({ "data.length": data.length })
     console.log({ partialResultsFound })
     // console.log({ status: configuration.fallBackOptions?.itemToGetAll })
 
-    // if (partialResultsFound && configuration.fallBackOptions?.itemToGetAll) {
-    //   const {urlPathPrefix, pageSuffix, inputOptions} = configuration;
-    //   const item = configuration.fallBackOptions.itemToGetAll;
-    //   // const optionSelector = getOptionItem(item) as InputItemSingleColumn;
-    //   const optionSelector = getOptionItem(item) as InputItemMultiColumn;
-
-
-    //   const listContext = await browser.newContext();
-    //   // const list = await getListFromContext(listContext, {urlPathPrefix, pageSuffix, optionSelector, inputOptions})
-    //   const list = await getMultiColumnList({urlPathPrefix, pageSuffix, optionSelector, inputOptions})
-    // ** TODO: getMultiColumnList needs an option to choose a single column of data OR getListFromContext needs to handle both single an multi-column lists and determine which type from the data object passed in. ** 
-    //   console.log({ list })
-    // }
+    if (partialResultsFound) {
+      // const { data, resultsCount } = 
+      await searchMultiple(browser, configuration);
+    }
 
     const response: SearchResponse = {
       status:  resultsCount > data.length ? 'Partial' : 'Complete',
@@ -68,7 +61,8 @@ const doSearchByPageBrowser = async <Type>(configuration: SearchConfiguration<Ty
         : null,
       results: {
         data,
-        found: resultsCount > 0 ? resultsCount : data.length,
+        // found: resultsCount > 0 ? resultsCount : data.length,
+        found: resultsCount,
         returned: data.length,
       }
     };
@@ -89,9 +83,32 @@ const doSearchByPageBrowser = async <Type>(configuration: SearchConfiguration<Ty
 
     return response;
   } finally {
-    // await browser.close();
+    await browser.close();
   }
 }
+
+const searchMultiple = async <Type>(browser: Browser, configuration: SearchConfiguration<Type>) => {
+
+  if (!configuration.fallBackOptions?.itemToGetAll) {
+    return { data: [], resultsCount: 0 };
+  }
+
+  if (configuration.fallBackOptions?.itemToGetAll) {
+    const item = configuration.fallBackOptions.itemToGetAll;
+    const {urlPathPrefix, pageSuffix, inputOptions} = configuration;
+
+  }
+
+  //   // const optionSelector = getOptionItem(item) as InputItemSingleColumn;
+  //   const optionSelector = getOptionItem(item) as InputItemMultiColumn;
+
+  //   const listContext = await browser.newContext();
+  //   // const list = await getListFromContext(listContext, {urlPathPrefix, pageSuffix, optionSelector, inputOptions})
+  //   const list = await getMultiColumnList({urlPathPrefix, pageSuffix, optionSelector, inputOptions})
+  // ** TODO: getMultiColumnList needs an option to choose a single column of data OR getListFromContext needs to handle both single an multi-column lists and determine which type from the data object passed in. ** 
+  //   console.log({ list })
+}
+
 
 const doSearchFromContext = async <Type>(context: BrowserContext, configuration: SearchConfiguration<Type>) => {
   const {urlPathPrefix, pageSuffix, inputOptions} = configuration;
@@ -101,6 +118,26 @@ const doSearchFromContext = async <Type>(context: BrowserContext, configuration:
 
   return await doSearchFromPage(page, inputOptions);
 }
+// await getPageFromContext(context, {urlPathPrefix, urlPathSuffix: pageSuffix});
+// await runSearchOnPage(page, inputOptions);
+// await getCounts(context, response); // existing
+// await getDataFromPage(page, pageCount);
+
+const runSearchOnPage = async (page: Page, inputOptions: any) => {
+  if (inputOptions) {
+    const generalInputOptions = createGeneralInputOptions(inputOptions);
+    await applyListOptions(page, generalInputOptions);
+  }
+
+  return await clickSearchButton(page);
+}
+
+const getDataFromPage = async (page: Page, pageCount: number) => {
+  const dataRows  = await getAllPagesData(page, pageCount);
+  const headerRow = await getHeaderRow(page);
+
+  return buildObjects(dataRows, headerRow);
+}
 
 const doSearchFromPage = async (page: Page, inputOptions: any) => {
 
@@ -109,162 +146,47 @@ const doSearchFromPage = async (page: Page, inputOptions: any) => {
     await applyListOptions(page, generalInputOptions);
   }
 
-  console.log('doSearchFromPage => clickSearchButton');
+  // console.log('doSearchFromPage => clickSearchButton');
 
   const response = await clickSearchButton(page);
 
- // to get count combine with getResultsCount: look for pager and use it if found ELSE count the rows in the table
-// if count >= 400 then use the HTML text find to total count
-  // ** new page
-  // const context = page.context();
-  const responseText = await response.text();
-  const newPage = await page.context().newPage();
-  await newPage.setContent(responseText, { waitUntil: 'load' });
-  // ** new page
 
-  const count = await getDataRowCount(newPage);
-  const popupMessageText = await getPopupMessageHTML(newPage);
-  console.log({ text: popupMessageText })
+  const context = page.context();
+  const { resultsCount, pageCount } = await getCounts(context, response);
+  // console.log({resultsCount});
+  // console.log({pageCount});
+  // separate counting results after a search click FROM retrieving the data 
 
-  if (count < 1) {
-    return { data: [], resultsCount: count };
-  }
-
-  // const resultsCount = await getResultsCount(page);
-
-  const pageCount = await getPageCount(newPage);
-  // const pageCount = await getPageCount(page);
 
   const dataRows  = await getAllPagesData(page, pageCount);
   const headerRow = await getHeaderRow(page);
 
   const data = buildObjects(dataRows, headerRow);
 
-  let resultsCount = data.length; 
-  if (resultsCount >= 400) {
-    resultsCount = await getResultsCount(page);
-
-  }
-
   return { data, resultsCount };
 }
 
 
-export const doSearchByPage = async <Type>(configuration: SearchConfiguration<Type>):Promise<SearchResponse> => {
+const getCounts = async (context: BrowserContext, response: Response) => {
+  let newPage;
 
-  return await doSearchByPageBrowser(configuration);
+  // const browser = context.browser();
+  // if (browser) {
+  //   const newContext = browser?.newContext();
+  //   const newPage2 = await (await newContext)?.newPage();
+  //   newPage = newPage2;
+  // } else {
+    newPage = await context.newPage();
+  // }
 
-  const browser = await chromium.launch({
-    headless: true,
-  });
+  const responseText = await response.text();
 
-  const {urlPathPrefix, pageSuffix, inputOptions} = configuration;
+  await newPage.setContent(responseText, { waitUntil: 'load' });
 
-  try {
-    let page = await getSearchPage(browser, urlPathPrefix, pageSuffix);
+  const resultsCount = await getResultsCount(newPage);
+  const pageCount = await getPageCount(newPage);
 
-    if (inputOptions) {
-      const generalInputOptions = createGeneralInputOptions(inputOptions);
-      await applyListOptions(page, generalInputOptions)
-    }
+  await newPage.close();
 
-    await clickSearchButton(page);
-
-    const resultsCount = await getResultsCount(page);
-    const pageCount = await getPageCount(page);
-    const dataRows  = await getAllPagesData(page, pageCount);
-    const headerRow = await getHeaderRow(page);
-
-    const data = buildObjects(dataRows, headerRow);
-
-    const response: SearchResponse = {
-      status:  resultsCount > data.length ? 'Partial' : 'Complete',
-      message: resultsCount > data.length 
-        ? `Warning, only Partial results were returned (${data.length} out of ${resultsCount}). Narrow search to obtain Complete results.` 
-        : null,
-      results: {
-        data,
-        found: resultsCount > 0 ? resultsCount : data.length,
-        returned: data.length,
-      }
-    };
-
-    return response;
-
-  } catch (error) {
-    const response: SearchResponse = {
-      status:  'Error',
-      message: error as string,
-      results: {
-        data: [],
-        found: 0,
-        returned: 0,
-      }
-    };
-
-    // console.log({error});
-
-    return response;
-  } finally {
-    await browser.close();
-  }
-}
-
-// possible outcome of search
-/**
- * page loaded, no options selected:  popupSelector exists with:
- *  style="height:150px;width:400px;cursor:default;z-index:10000;display:none;visibility:hidden;"
- * less than 10 on a single page, no total items count
- * up to 400 on multiple pages, total items count shown,
- * over 400 on multiple pages, total items count shown,
- *  style="height: 150px; width: 400px; cursor: default; z-index: 12000; visibility: visible; display: table; position: absolute; left: 595px; top: 252px;"
- */
-
-/**
- * number of results: 0 = popup visibility: visible, row count = 0 
- * number of results: 1 - 10 = single page
- * number of results: 11 - 400 = multiple pages
- * number of results: 400+ = popup visibility: visible
- */
-const getResultsCount = async (page: Page): Promise<number>  => {
-  const popupSelector = `#ctl00_GridContent_popupCantContinueDialog_PW-1`;
-  // console.log('Wait started')
-  // await page.waitForSelector(popupSelector);
-  // await page.waitForLoadState('networkidle');
-// this works inconsistently, depending on if the pop up never shows 
-  // console.log('Wait done')
-  console.log('getResultsCount')
-  const isTooMany = await page.locator(popupSelector).isVisible();
-  console.log({isTooMany})
-
-  let count: number = -1;
-  if (isTooMany) {
-    const selector = `#ctl00_GridContent_popupCantContinueDialog_msgDiv > b >> nth=0`;
-    const countText = await page.locator(selector).innerText();
-    count = parseInt(countText);
-  }
-
-  return count;
-}
-
-export const getPopupMessageHTML = async (page: Page): Promise<string>  => {
-  const messageSelector = `#ctl00_GridContent_popupCantContinueDialog_msgDiv`;
-  const locator = await page.locator(messageSelector);
-
-  let text = '';
-  if (await locator.count() > 0) {
-    text = await locator.innerHTML();
-  }
-
-  return text;
-}
-
-// Gets the count of rows on only a single page of results.
-export const getDataRowCount = async (page: Page) => {
-  const selector = '#ctl00_GridContent_gridFilers_DXMainTable > tbody  > tr.dxgvDataRow_Glass';
-  const locator = await page.locator(selector);
-
-  const count = (await locator.count()); 
-
-  return count;
+  return { resultsCount, pageCount };
 }

@@ -1,5 +1,5 @@
 import { Page } from "playwright";
-import { InputItemDatePicker } from "../constants/option-selectors.js";
+import { InputItemDatePicker } from "../pages/types-input";
 
 export const validateDate = (item: InputItemDatePicker, date: string): void => {
   const isValid = !isNaN(Date.parse(date));

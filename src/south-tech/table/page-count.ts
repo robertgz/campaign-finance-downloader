@@ -15,11 +15,6 @@ const getPageCountFromPager = async (page: Page): Promise<number> => {
   const summaryLocator = await page.locator(summarySelector);
   const rawPageNumbers: string[] = await summaryLocator.allTextContents();
 
-  // const pageNumbers = rawPageNumbers
-  //   .map((num) => parseInt(num.replaceAll('[','').replaceAll(']','')));
-
-  // return Math.max(...pageNumbers)
-
   return getMaxPagerNumber(rawPageNumbers)
 }
 
@@ -28,10 +23,6 @@ const getPageCountFromSummary = async (page: Page): Promise<number> => {
   const summarySelector = '#ctl00_GridContent_gridFilers_DXPagerBottom > b.dxp-lead.dxp-summary';
   const summaryLocator = await page.locator(summarySelector);
   const summaryText = await summaryLocator.innerText();
-
-  // const countText = summaryText.split('(')[0].split('of')[1].trim();
-  
-  // return parseInt(countText);
 
   return parsePageCountFromSummary(summaryText);
 }
@@ -47,10 +38,6 @@ export const getPagerSummaryText = async (page: Page): Promise<string> => {
 
 export const getPagerResultsCount = async (page: Page): Promise<number> => {
   const summaryText = await getPagerSummaryText(page);
-
-  // const countText = summaryText.split('(')[1].split(' ')[0].trim();
-
-  // return parseInt(countText);
 
   return parseItemCountFromSummary(summaryText)
 }

@@ -1,5 +1,5 @@
 import { Page } from "playwright";
-import { InputItemCheckbox } from "../constants/option-selectors.js";
+import { InputItemCheckbox } from "../pages/types-input";
 
 export const setAllowPartialMatch = async (page: Page, allowPartialMatch: boolean): Promise<void> => {
   const checkBoxSelector = '#ctl00_DefaultContent_ASPxRoundPanel1_chbAllowPartialMatch_S_D';

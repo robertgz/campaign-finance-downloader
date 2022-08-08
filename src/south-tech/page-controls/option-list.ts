@@ -1,6 +1,6 @@
 
 import { Page } from "playwright";
-import {  InputItemSingleColumn } from "../constants/option-selectors.js";
+import { InputItemSingleColumn } from "../pages/types-input";
 
 export const getOptionList = async (page: Page, optionItem: InputItemSingleColumn): Promise<string[]>  => {
   const selector = `${optionItem.listSelector} > tbody > tr > td`;

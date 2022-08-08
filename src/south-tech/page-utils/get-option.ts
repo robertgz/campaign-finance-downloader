@@ -1,13 +1,13 @@
 
 import { Page } from "playwright";
-import {
-  getOptionItem,
-  InputItemCategory,
+import { 
   InputItemCommon,
   InputItemMultiColumn,
   InputItemSingleColumn,
   InputOptionItem,
-} from "../constants/option-selectors.js";
+} from "../pages/types-input";
+import { getOptionItem } from "../constants/get-option-item";
+import { InputItemCategory } from "../constants/enums";
 import { getMultiItemList } from "../page-controls/option-list-multi-column.js";
 import { getOptionList } from "../page-controls/option-list.js";
 

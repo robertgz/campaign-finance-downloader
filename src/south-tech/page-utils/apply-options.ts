@@ -1,16 +1,15 @@
 import { Page } from "playwright";
-import {
-  getOptionItem,
+import { 
   InputItemMultiColumn,
-  OptionItemsCollectionType,
   InputItemSingleColumn,
-  InputItemCategory,
   InputItemDatePicker,
   InputItemCheckbox,
   InputItemText,
   OptionTypes,
   InputOption,
-} from "../constants/option-selectors";
+} from "../pages/types-input";
+import { getOptionItem } from "../constants/get-option-item";
+import { InputItemCategory } from "../constants/enums";
 import { setOption, validateOption } from "../page-controls/option-list";
 import { setMultiColumnOption, validateMultiColumnOption } from "../page-controls/option-list-multi-column.js";
 import { setAllowPartialMatch2 } from "../page-controls/partial-match.js";

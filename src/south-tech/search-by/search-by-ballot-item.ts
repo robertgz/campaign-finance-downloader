@@ -2,8 +2,9 @@
 import { getList } from "../pages/get-list";
 import { doSearchByPage } from "../pages/search-by";
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
-import { OptionItemsCollection, OptionTypes } from "../constants/option-selectors";
-import { BallotItem } from "./output-types";
+import { OptionItemsCollection } from "../constants/option-selectors";
+import { BallotItem } from "../pages/types-output";
+import { OptionTypes } from "../pages/types-input";
 
 export type ElectionDateInput = Pick<OptionTypes, "electionType">;
 export type BallotItemInput = Pick<OptionTypes, "electionType" | "electionDate">;
@@ -42,9 +43,6 @@ export const ballotItemSearch = async (urlPathPrefix: string, inputOptions: Ball
     urlPathPrefix,
     pageSuffix,
     inputOptions,
-    // fallBackOptions: {
-    //   itemToGetAll: "ballotItem"
-    // }
   });
 }
 

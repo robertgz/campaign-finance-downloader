@@ -1,6 +1,6 @@
 
 import { getAgencyName } from "../agency-name";
-import { BallotItem, ByJurisdiction, SearchResponse } from "../search-by/output-types";
+import { BallotItem, ByJurisdiction, SearchResponse } from "../pages/types-output";
 import { searchBy } from "../search-by";
 import type { UrlPrefixType } from "../types";
 

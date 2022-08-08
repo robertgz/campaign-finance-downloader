@@ -1,6 +1,6 @@
 
 import { Page } from "playwright";
-import { InputItemMultiColumn } from "../constants/option-selectors";
+import { InputItemMultiColumn } from "../pages/types-input";
 import { areStringsEqual, buildObjects } from "../page-utils/map-utils";
 
 export const getMultiItemList = async (page: Page, optionItem: InputItemMultiColumn) => {

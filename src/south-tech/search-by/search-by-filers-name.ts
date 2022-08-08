@@ -2,7 +2,8 @@
 import { getList } from "../pages/get-list";
 import { doSearchByPage } from "../pages/search-by";
 import { SearchByPagePaths } from "../constants/search-by-page-paths";
-import { OptionItemsCollection, OptionTypes } from "../constants/option-selectors";
+import { OptionItemsCollection } from "../constants/option-selectors";
+import { OptionTypes } from "../pages/types-input";
 
 export type FilersNameSearch2 = Pick<OptionTypes, "filingYear" | "filerName" | "allowPartialMatch">;
 

@@ -2,7 +2,7 @@ import { BrowserContext, chromium } from "playwright";
 import { gotoPage } from "./get-page.js";
 import { PageSuffix, UrlPathPrefix } from "../types.js";
 import { applyListOptions, createGeneralInputOptions } from "../page-utils/apply-options.js";
-import { InputItemCommon, OptionTypes } from "../constants/option-selectors.js";
+import { InputItemCommon, OptionTypes } from "./types-input.js";
 import { getOptionAny } from "../page-utils/get-option.js";
 
 export interface ListConfiguration extends UrlPathPrefix, PageSuffix {

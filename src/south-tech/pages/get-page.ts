@@ -31,13 +31,29 @@ export const gotoPage = async (page: Page, { urlPathPrefix, urlPathSuffix }: Url
 export const getPageFromContext = async (context: BrowserContext, { urlPathPrefix, urlPathSuffix }: UrlInput): Promise<Page> => {
   const page = await context.newPage();
   const pageURL = getPageUrl(urlPathPrefix);
+  const fullURL = `${pageURL}/${urlPathSuffix}`
+  
+  try {
+    // await page.goto(fullURL);
+    
+    const [response] = await Promise.all([
+      page.waitForResponse(url => url.url().includes(fullURL)),
+      
+      page.goto(fullURL),
+      // page.waitForLoadState('networkidle'),
+      // page.waitForLoadState('load'),
+    ]);
 
-  await page.goto(`${pageURL}/${urlPathSuffix}`);
+    // await page.waitForTimeout(3000)
 
-  return page;
+  } catch(error) {
+    throw new Error(`Failed to open URL: ${fullURL}`);
+  } finally {
+    return page;
+  }
+
 }
 
-// Searches Only show the first 400 results.
 export const getPage = async ({ urlPathPrefix, browser, urlPathSuffix }: PageInput): Promise<Page>  => {
   const pageURL = getPageUrl(urlPathPrefix);
   const page = await browser.newPage();
